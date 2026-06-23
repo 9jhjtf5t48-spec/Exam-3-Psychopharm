@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NURS 5312 — Exam 3 Practice (Ch 7–10, 50 MCQ)</title>
+<style>
+  :root{
+    --navy:#1F3864; --blue:#2E75B6; --blue2:#4472C4;
+    --green:#548235; --greenbg:#E2EFDA; --red:#C0392B; --redbg:#FBE4E2;
+    --ink:#222; --muted:#5b6470; --line:#d7dce3; --card:#fff; --bg:#eef2f7;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;line-height:1.5;}
+  .wrap{max-width:820px;margin:0 auto;padding:20px 16px 80px;}
+  .eyebrow{color:var(--muted);font-size:13px;letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px;}
+  h1{color:var(--navy);font-size:26px;margin:0 0 8px;line-height:1.2;}
+  .lede{color:#33404f;margin:0 0 6px;}
+  .fine{color:var(--muted);font-size:13px;font-style:italic;margin:0 0 16px;}
+  .bar{position:sticky;top:0;z-index:5;background:rgba(238,242,247,.95);backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);padding:10px 0;margin:0 0 14px;
+    display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+  .count{font-weight:700;color:var(--navy);}
+  button{font:inherit;cursor:pointer;border:0;border-radius:8px;padding:9px 16px;font-weight:600;}
+  .btn-primary{background:var(--blue2);color:#fff;}
+  .btn-primary:hover{background:var(--blue);}
+  .btn-ghost{background:#fff;color:var(--navy);border:1px solid var(--line);}
+  .score{margin-left:auto;font-weight:700;font-size:15px;}
+  .q{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 16px 8px;margin:0 0 14px;
+    box-shadow:0 1px 2px rgba(0,0,0,.04);}
+  .qnum{color:var(--blue);font-weight:700;font-size:13px;letter-spacing:.03em;text-transform:uppercase;}
+  .stem{font-weight:600;margin:4px 0 12px;}
+  .opt{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:9px;
+    padding:10px 12px;margin:0 0 8px;cursor:pointer;transition:.12s;background:#fff;}
+  .opt:hover{border-color:var(--blue);background:#f6f9fd;}
+  .opt.sel{border-color:var(--blue2);background:#eaf1fb;}
+  .opt .let{font-weight:700;color:var(--navy);min-width:18px;}
+  .opt.correct{border-color:var(--green);background:var(--greenbg);}
+  .opt.wrong{border-color:var(--red);background:var(--redbg);}
+  .rat{display:none;border-left:4px solid var(--blue2);background:#f3f7fc;border-radius:6px;
+    padding:8px 12px;margin:6px 0 10px;font-size:14px;color:#2a3543;}
+  .rat b{color:var(--green);}
+  .graded .rat{display:block;}
+  .graded .opt{cursor:default;}
+  .result{display:none;background:#fff;border:2px solid var(--blue2);border-radius:12px;
+    padding:18px;margin:0 0 18px;text-align:center;}
+  .result.show{display:block;}
+  .result .big{font-size:32px;font-weight:800;color:var(--navy);}
+  .result .sub{color:var(--muted);margin-top:4px;}
+  footer{color:var(--muted);font-size:12px;text-align:center;margin-top:24px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">NURS 5312 · Neuropsychopharmacology</div>
+  <h1>Exam 3 Practice — Chapters 7–10 · 50 MCQ</h1>
+  <p class="lede">Treatments for mood disorders · anxiety, trauma &amp; anxiolytics · chronic pain · sleep &amp; wakefulness. Answer all 50, then submit to grade.</p>
+  <p class="fine">Original practice questions written from the Exam 3 review key points, in your module-quiz format. Use for self-study; verify clinical details against current references.</p>
+
+  <div class="bar">
+    <span class="count"><span id="answered">0</span> / 50 answered</span>
+    <button class="btn-primary" id="submit">Submit &amp; grade</button>
+    <button class="btn-ghost" id="retake">Retake</button>
+    <span class="score" id="scoreInline"></span>
+  </div>
+
+  <div class="result" id="result">
+    <div class="big" id="bigScore"></div>
+    <div class="sub" id="subScore"></div>
+  </div>
+
+  <div id="quiz"></div>
+
+  <footer>NURS 5312 · Exam 3 Practice (Ch 7–10) · self-grading set of 50</footer>
+</div>
+
+<script>
+const QUESTIONS = [
+["The therapeutic effect of an SSRI is typically delayed 4–8 weeks because:",["SSRIs must accumulate in fat stores","Presynaptic 5HT-1A autoreceptors must desensitize before serotonin release increases","The liver must first induce CYP450 enzymes","Tolerance to the side effects must develop"],1,"Ch. 7 — therapeutic lag / 5HT-1A autoreceptor desensitization"],
+["Which SSRI is considered the best tolerated, with the fewest CYP450 drug interactions?",["Paroxetine","Fluvoxamine","Escitalopram","Fluoxetine"],2,"Ch. 7 — SSRI profiles"],
+["A patient abruptly stops paroxetine and develops flu-like symptoms, nausea, and “brain zaps.” This is caused by:",["Serotonin syndrome","Discontinuation syndrome (short half-life)","Anticholinergic toxicity","Hypertensive crisis"],1,"Ch. 7 — paroxetine = shortest half-life, worst discontinuation"],
+["Which antidepressant has the longest half-life, making it most “forgiving” of missed doses?",["Venlafaxine","Paroxetine","Fluoxetine","Sertraline"],2,"Ch. 7 — fluoxetine (norfluoxetine metabolite ~1–2 wks)"],
+["A patient on an SSRI started tramadol and now has agitation, clonus, hyperreflexia, and fever. The specific antidote is:",["Flumazenil","Cyproheptadine","Sodium bicarbonate","Phentolamine"],1,"Ch. 7 — serotonin syndrome → cyproheptadine"],
+["Which antidepressant class is most lethal in overdose due to sodium-channel blockade?",["SSRIs","SNRIs","TCAs","NDRIs"],2,"Ch. 7 — TCA cardiotoxicity"],
+["A patient overdoses on amitriptyline and shows a widened QRS. The appropriate treatment is:",["IV sodium bicarbonate","Flumazenil","Cyproheptadine","Naloxone"],0,"Ch. 7 — TCA overdose, sodium bicarbonate"],
+["Which antidepressant is contraindicated in bulimia/anorexia due to seizure risk?",["Mirtazapine","Bupropion","Sertraline","Duloxetine"],1,"Ch. 7 — bupropion lowers seizure threshold"],
+["A depressed patient has SSRI-induced sexual dysfunction. Which agent lacks sexual side effects and could be added/substituted?",["Paroxetine","Venlafaxine","Bupropion","Citalopram"],2,"Ch. 7 — bupropion (no serotonergic sexual effects)"],
+["Mirtazapine causes sedation and weight gain mainly by blocking which receptor?",["Histamine H1","Dopamine D2","Serotonin 5HT-1A","Beta-1 adrenergic"],0,"Ch. 7 — H1 blockade"],
+["Trazodone is most commonly used at LOW doses for which indication?",["Mania","Insomnia","OCD","Neuropathic pain"],1,"Ch. 7 — SARI; sedating (also priapism risk)"],
+["Which TCA is the gold standard for OCD?",["Nortriptyline","Desipramine","Clomipramine","Imipramine"],2,"Ch. 7 — clomipramine for OCD"],
+["Imipramine is classically used for which pediatric condition?",["ADHD","Enuresis (bedwetting)","Autism","Sleepwalking"],1,"Ch. 7 — imipramine for enuresis"],
+["A patient on an MAOI eats aged cheese and develops a severe headache with dangerously high BP. Treatment is:",["Cyproheptadine","Phentolamine","Flumazenil","Sodium bicarbonate"],1,"Ch. 7 — tyramine hypertensive crisis → phentolamine"],
+["MAOIs are particularly effective for which depression presentation?",["Psychotic depression","Atypical depression","Mild depression","Postpartum depression"],1,"Ch. 7 — atypical depression; MAOIs are last-line"],
+["The olanzapine–fluoxetine combination (Symbyax) is FDA-approved for:",["Generalized anxiety disorder","Treatment-resistant and bipolar depression","OCD","Insomnia"],1,"Ch. 7 — OFC indication"],
+["Which mood stabilizer is most associated with Stevens-Johnson syndrome and requires slow titration?",["Lithium","Valproate","Lamotrigine","Carbamazepine"],2,"Ch. 7 — lamotrigine rash/SJS"],
+["Lamotrigine stabilizes bipolar disorder “from below,” meaning it primarily treats:",["Acute mania","Bipolar depression and maintenance","Rapid cycling only","Psychosis"],1,"Ch. 7 — depression-minded agent"],
+["A patient on lithium starts a thiazide diuretic and develops tremor, ataxia, and confusion. This indicates:",["Serotonin syndrome","Lithium toxicity (thiazide raises levels)","Hypertensive crisis","Discontinuation syndrome"],1,"Ch. 7 — lithium toxicity; thiazides/NSAIDs/ACE-I raise levels"],
+["Essential routine monitoring for a patient on lithium includes:",["CBC and liver enzymes only","Serum lithium level, renal function, and TSH","ECG only","No monitoring is needed"],1,"Ch. 7 — lithium monitoring"],
+["According to the neurotrophic hypothesis, chronic stress in depression leads to:",["Increased BDNF","Decreased BDNF and loss of synapses","Increased dopamine release","Decreased cortisol"],1,"Ch. 6/7 — stress → ↓BDNF → neuroprogression"],
+["“Remission” of depression is best defined as:",["About 50% symptom improvement","Removal of essentially ALL symptoms","Return of symptoms after recovery","A partial response"],1,"Ch. 7 — response vs. remission"],
+["The brain region most central to the fear response is the:",["Hippocampus","Amygdala","Cerebellum","Striatum"],1,"Ch. 8 — amygdala-centered fear circuit"],
+["Worry (as opposed to fear) is generated primarily by which circuit?",["Amygdala-centered circuit","CSTC (cortico-striato-thalamo-cortical) loop","Nigrostriatal pathway","Mesolimbic pathway"],1,"Ch. 8 — worry = CSTC loop"],
+["Benzodiazepines reduce anxiety by acting as:",["GABA-A positive allosteric modulators","GABA receptor antagonists","Serotonin reuptake inhibitors","Orexin antagonists"],0,"Ch. 8 — GABA-A PAM"],
+["The reversal agent for a benzodiazepine overdose is:",["Naloxone","Flumazenil","Cyproheptadine","Phentolamine"],1,"Ch. 8 — flumazenil"],
+["Which medication should be AVOIDED in a patient with a substance-use history seeking anxiety relief?",["SSRIs","SNRIs","Benzodiazepines","Buspirone"],2,"Ch. 8 — benzo dependence/abuse"],
+["First-line pharmacotherapy for generalized anxiety disorder (GAD) is:",["Benzodiazepines","SSRIs/SNRIs","TCAs","Antipsychotics"],1,"Ch. 8 — SSRIs/SNRIs first-line"],
+["A non-sedating, non-addictive 5HT-1A partial agonist used as an adjunct for GAD is:",["Buspirone","Hydroxyzine","Propranolol","Zolpidem"],0,"Ch. 8 — buspirone"],
+["For discrete performance (social) anxiety, which agent blocks the autonomic symptoms (tremor, tachycardia)?",["Prazosin","Propranolol (beta-blocker)","Buspirone","Suvorexant"],1,"Ch. 8 — beta-blocker for performance anxiety"],
+["The treatment of choice for PTSD-related nightmares is:",["Prazosin (alpha-1 antagonist)","Zolpidem","Diazepam","Quetiapine"],0,"Ch. 8 — prazosin"],
+["Fear extinction is best described as:",["Erasing the original fear memory","New learning that suppresses the conditioned fear response","A class of medication","Sensitization to the feared stimulus"],1,"Ch. 8 — extinction = new inhibitory learning"],
+["Fear extinction is the neurobiological basis for which therapy?",["Electroconvulsive therapy","Exposure-based therapy / CBT","Bright light therapy","Dialectical behavior therapy"],1,"Ch. 8 — exposure therapy"],
+["Which benzodiazepines are safest in liver disease and the elderly because they undergo only glucuronidation (“LOT”)?",["Diazepam, alprazolam, clonazepam","Lorazepam, oxazepam, temazepam","Midazolam, triazolam, estazolam","Chlordiazepoxide, clorazepate"],1,"Ch. 8 — LOT drugs"],
+["A feature shared by all anxiety disorders is:",["Psychosis","Anxiety/fear coupled with worry arising from shared circuits","Manic episodes","Progressive cognitive decline"],1,"Ch. 8 — common neurobiology"],
+["Central sensitization is best described as:",["Inflammation localized to the injury site","CNS amplification of pain with little or no peripheral input","Peripheral nerve transection only","Normal nociceptive processing"],1,"Ch. 9 — central sensitization"],
+["“Allodynia” means:",["Increased pain from a painful stimulus","Pain from a normally non-painful stimulus (e.g., light touch)","Complete absence of pain","Numbness and tingling"],1,"Ch. 9 — Table 9-1 definitions"],
+["Gabapentin and pregabalin relieve neuropathic pain by binding which target?",["Mu-opioid receptors","The alpha-2-delta subunit of voltage-sensitive calcium channels","Voltage-sensitive sodium channels","GABA-A receptors"],1,"Ch. 9 — α2δ ligands"],
+["All of the following are FIRST-LINE for neuropathic pain EXCEPT:",["Alpha-2-delta ligands (gabapentin/pregabalin)","SNRIs (duloxetine)","TCAs (amitriptyline)","Opioids"],3,"Ch. 9 — opioids are NOT first-line"],
+["Which antidepressant is preferred for depression with comorbid neuropathic pain or fibromyalgia?",["Fluoxetine","Duloxetine (SNRI)","Bupropion","Mirtazapine"],1,"Ch. 9 — SNRI engages descending inhibition"],
+["SNRIs relieve pain by enhancing which descending pathway(s)?",["Serotonin and norepinephrine descending inhibition","Dopamine only","GABA only","Histamine"],0,"Ch. 9 — descending NE + 5-HT inhibition"],
+["Fibromyalgia is characterized by:",["Localized joint pain with swelling","Chronic widespread pain without a clear lesion, plus fatigue and cognitive symptoms","Acute post-surgical pain","Pain only on movement"],1,"Ch. 9 — central sensitization syndrome"],
+["The ascending tract carrying pain LOCATION and INTENSITY to the cortex is the:",["Spinothalamic tract","Corticospinal tract","Dorsal column–medial lemniscus","Vagus nerve"],0,"Ch. 9 — spinothalamic = sensory/discriminatory"],
+["The periaqueductal gray (PAG) is the hub of:",["Ascending pain transmission","Descending pain inhibition (the endorphin system)","Voluntary motor control","Circadian rhythm"],1,"Ch. 9 — PAG descending modulation"],
+["Which neurotransmitter promotes wakefulness via H1 receptors?",["GABA","Histamine","Melatonin","Adenosine"],1,"Ch. 10 — histamine (TMN)"],
+["Narcolepsy is caused by a deficiency of which neuropeptide?",["Serotonin","Orexin (hypocretin)","GABA","Acetylcholine"],1,"Ch. 10 — orexin loss"],
+["Sleepwalking, sleep terrors, and enuresis occur during which sleep stage?",["N1","N2","N3 (deep/delta)","REM"],2,"Ch. 10 — N3 parasomnias"],
+["A dual orexin receptor antagonist (e.g., suvorexant) is preferred over a benzodiazepine because it has:",["A faster onset","Less dependence, less next-day impairment, and lower fall risk","A lower cost","Stronger sedation"],1,"Ch. 10 — DORA advantages"],
+["Ramelteon promotes sleep onset by acting as an agonist at which receptors?",["GABA-A","MT1/MT2 melatonin receptors","Orexin receptors","Histamine H1"],1,"Ch. 10 — melatonin agonist"],
+["Tasimelteon is specifically indicated for:",["Acute insomnia in healthy adults","Non-24-hour sleep–wake disorder (classically in totally blind patients)","Narcolepsy with cataplexy","Restless legs syndrome"],1,"Ch. 10 — non-24 sleep-wake disorder"]
+];
+
+const LET=["A","B","C","D"];
+const answers={};       // qIndex -> chosenIndex
+let graded=false;
+const quizEl=document.getElementById("quiz");
+
+function render(){
+  quizEl.innerHTML="";
+  QUESTIONS.forEach((q,qi)=>{
+    const card=document.createElement("div");
+    card.className="q";
+    card.id="q"+qi;
+    let html='<div class="qnum">Question '+(qi+1)+'</div><div class="stem">'+q[0]+'</div>';
+    q[1].forEach((opt,oi)=>{
+      html+='<div class="opt" data-q="'+qi+'" data-o="'+oi+'"><span class="let">'+LET[oi]+'.</span><span>'+opt+'</span></div>';
+    });
+    html+='<div class="rat"><b>Answer: '+LET[q[2]]+'.</b> '+q[3]+'</div>';
+    card.innerHTML=html;
+    quizEl.appendChild(card);
+  });
+  document.querySelectorAll(".opt").forEach(el=>el.addEventListener("click",onPick));
+  updateCount();
+}
+
+function onPick(e){
+  if(graded) return;
+  const el=e.currentTarget;
+  const qi=+el.dataset.q, oi=+el.dataset.o;
+  answers[qi]=oi;
+  document.querySelectorAll('.opt[data-q="'+qi+'"]').forEach(o=>o.classList.remove("sel"));
+  el.classList.add("sel");
+  updateCount();
+}
+
+function updateCount(){
+  document.getElementById("answered").textContent=Object.keys(answers).length;
+}
+
+function grade(){
+  graded=true;
+  let correct=0;
+  QUESTIONS.forEach((q,qi)=>{
+    const card=document.getElementById("q"+qi);
+    card.classList.add("graded");
+    const chosen=answers[qi];
+    if(chosen===q[2]) correct++;
+    document.querySelectorAll('.opt[data-q="'+qi+'"]').forEach(o=>{
+      const oi=+o.dataset.o;
+      o.classList.remove("sel");
+      if(oi===q[2]) o.classList.add("correct");
+      else if(oi===chosen) o.classList.add("wrong");
+    });
+  });
+  const pct=Math.round(correct/QUESTIONS.length*100);
+  const res=document.getElementById("result");
+  res.classList.add("show");
+  document.getElementById("bigScore").textContent=correct+" / "+QUESTIONS.length+"  ("+pct+"%)";
+  document.getElementById("subScore").textContent=pct>=80?"Strong — review the misses and you're in good shape.":pct>=70?"Solid start — focus on the rationales you missed.":"Keep going — work through the rationales, then retake.";
+  document.getElementById("scoreInline").textContent="Score: "+correct+"/"+QUESTIONS.length;
+  res.scrollIntoView({behavior:"smooth",block:"center"});
+}
+
+function retake(){
+  graded=false;
+  for(const k in answers) delete answers[k];
+  document.getElementById("result").classList.remove("show");
+  document.getElementById("scoreInline").textContent="";
+  render();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+document.getElementById("submit").addEventListener("click",grade);
+document.getElementById("retake").addEventListener("click",retake);
+render();
+</script>
+</body>
+</html>
