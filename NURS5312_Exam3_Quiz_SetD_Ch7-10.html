@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NURS 5312 · Exam 3 Quiz — SET D — Chapters 7–10</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Spline+Sans+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f4eef4;
+    --surface:#ffffff;
+    --ink:#241825;
+    --ink-soft:#5d4f5d;
+    --line:#e8dbe8;
+    --teal:#a21caf;          /* primary accent = plum for Set D */
+    --teal-bright:#c93ad6;
+    --correct:#15803d;
+    --correct-bg:#dcf6e3;
+    --correct-line:#9fdcb4;
+    --wrong:#b91c1c;
+    --wrong-bg:#fde6e4;
+    --wrong-line:#f1b4ae;
+    --amber-ink:#7a4708;
+    --amber-bg:#fdf2d8;
+    --amber-line:#ecd29a;
+    --shadow:0 1px 2px rgba(36,24,37,.06),0 8px 24px rgba(36,24,37,.08);
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:"Inter",system-ui,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:0 18px 96px}
+  header.top{position:sticky;top:0;z-index:20;background:rgba(244,238,244,.86);
+    backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .top-inner{max-width:760px;margin:0 auto;padding:14px 18px 12px}
+  .kicker{font-family:"Spline Sans Mono",monospace;font-size:11px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--teal);font-weight:600}
+  h1{font-family:"Fraunces",serif;font-weight:600;font-size:clamp(22px,4.6vw,30px);
+    margin:2px 0 2px;letter-spacing:-.01em;line-height:1.1}
+  .sub{font-size:13px;color:var(--ink-soft);margin:0}
+  .meta-row{display:flex;align-items:center;gap:14px;margin-top:12px;flex-wrap:wrap}
+  .progress{flex:1;min-width:140px;height:8px;background:#e4d4e4;border-radius:99px;overflow:hidden}
+  .progress > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--teal-bright));
+    border-radius:99px;transition:width .35s ease}
+  .score-pill{font-family:"Spline Sans Mono",monospace;font-size:12.5px;font-weight:600;color:var(--ink);
+    background:var(--surface);border:1px solid var(--line);padding:5px 11px;border-radius:99px;white-space:nowrap}
+  .score-pill b{color:var(--correct)}
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 4px}
+  .filters button{font-family:"Inter";font-size:13px;font-weight:600;cursor:pointer;
+    border:1px solid var(--line);background:var(--surface);color:var(--ink-soft);
+    padding:7px 13px;border-radius:99px;transition:.18s}
+  .filters button:hover{border-color:var(--teal);color:var(--teal)}
+  .filters button.on{background:var(--ink);border-color:var(--ink);color:#fff}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:18px;
+    box-shadow:var(--shadow);padding:24px 22px 22px;margin-top:14px}
+  .qhead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+  .qnum{font-family:"Spline Sans Mono",monospace;font-size:12px;font-weight:600;color:var(--ink-soft)}
+  .tag{font-family:"Spline Sans Mono",monospace;font-size:10.5px;font-weight:600;letter-spacing:.06em;
+    text-transform:uppercase;padding:4px 9px;border-radius:6px}
+  .tag.ch7{background:#e9e7fb;color:#4338ca}
+  .tag.ch8{background:#e0f2f1;color:#0f766e}
+  .tag.ch9{background:#fde9d9;color:#b45309}
+  .tag.ch10{background:#e2edfb;color:#1d4ed8}
+  .tag.sata{background:#fce7f3;color:#be185d;margin-left:6px}
+  .qtext{font-size:17px;font-weight:500;line-height:1.45;margin:0 0 4px}
+  .hint{font-size:12.5px;color:var(--ink-soft);margin:6px 0 2px;font-style:italic}
+  ul.opts{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-direction:column;gap:9px}
+  ul.opts li{display:flex;gap:11px;align-items:flex-start;cursor:pointer;border:1.5px solid var(--line);
+    border-radius:12px;padding:12px 14px;font-size:15px;transition:.14s;background:#fff}
+  ul.opts li:hover:not(.locked){border-color:var(--teal);background:#fdf4fd}
+  ul.opts li .mark{flex:none;width:22px;height:22px;border-radius:50%;border:1.5px solid #cbb6cb;
+    display:grid;place-items:center;font-size:12px;font-weight:700;color:#fff;margin-top:1px;transition:.14s}
+  ul.opts li.sel .mark{background:var(--teal);border-color:var(--teal)}
+  ul.opts.locked li{cursor:default}
+  ul.opts li.correct{border-color:var(--correct-line);background:var(--correct-bg)}
+  ul.opts li.correct .mark{background:var(--correct);border-color:var(--correct)}
+  ul.opts li.wrong{border-color:var(--wrong-line);background:var(--wrong-bg)}
+  ul.opts li.wrong .mark{background:var(--wrong);border-color:var(--wrong)}
+  ul.opts li .otext{flex:1}
+  .check-btn{margin-top:16px;font-family:"Inter";font-size:14px;font-weight:600;background:var(--teal);
+    color:#fff;border:none;border-radius:10px;padding:11px 20px;cursor:pointer;transition:.18s}
+  .check-btn:hover{background:#86178f}
+  .check-btn:disabled{background:#cbb6cb;cursor:not-allowed}
+  .rationale{margin-top:16px;border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.55;
+    border:1px solid;display:none}
+  .rationale.show{display:block;animation:fade .3s ease}
+  .rationale.ok{background:var(--correct-bg);border-color:var(--correct-line)}
+  .rationale.no{background:var(--wrong-bg);border-color:var(--wrong-line)}
+  .rationale .verdict{font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.04em;
+    margin-bottom:6px;display:flex;align-items:center;gap:6px}
+  .rationale.ok .verdict{color:var(--correct)}
+  .rationale.no .verdict{color:var(--wrong)}
+  .rationale .ref{display:inline-block;margin-top:8px;font-family:"Spline Sans Mono",monospace;font-size:11.5px;
+    font-weight:600;color:var(--amber-ink);background:var(--amber-bg);border:1px solid var(--amber-line);
+    padding:3px 9px;border-radius:6px}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  .nav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:20px}
+  .nav button{font-family:"Inter";font-size:14px;font-weight:600;cursor:pointer;border:1px solid var(--line);
+    background:var(--surface);color:var(--ink);padding:10px 18px;border-radius:10px;transition:.16s}
+  .nav button:hover:not(:disabled){border-color:var(--ink)}
+  .nav button:disabled{opacity:.4;cursor:not-allowed}
+  .nav .next{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .nav .next:hover:not(:disabled){background:#150d16}
+  .results{background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);
+    padding:30px 24px;margin-top:16px;text-align:center;display:none}
+  .results.show{display:block}
+  .results .big{font-family:"Fraunces",serif;font-size:52px;font-weight:600;color:var(--teal);line-height:1}
+  .results h2{font-family:"Fraunces",serif;font-weight:600;margin:6px 0 2px}
+  .breakdown{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:22px 0 6px;text-align:left}
+  .breakdown div{border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+  .breakdown .lab{font-size:12px;color:var(--ink-soft);font-weight:600}
+  .breakdown .val{font-family:"Spline Sans Mono",monospace;font-size:18px;font-weight:600;margin-top:2px}
+  .restart{margin-top:20px;font-family:"Inter";font-size:14px;font-weight:600;background:var(--teal);color:#fff;
+    border:none;border-radius:10px;padding:12px 24px;cursor:pointer}
+  .restart:hover{background:#86178f}
+  footer{text-align:center;font-size:11.5px;color:var(--ink-soft);margin-top:34px;line-height:1.6}
+  @media(max-width:480px){.breakdown{grid-template-columns:1fr}.card{padding:20px 16px}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-inner">
+    <div class="kicker">NURS 5312 · Exam 3 · Set D</div>
+    <h1>Mood, Anxiety, Pain &amp; Sleep — Round 4</h1>
+    <p class="sub">50 all-new questions — Stahl Chapters 7, 8, 9 &amp; 10</p>
+    <div class="meta-row">
+      <span class="progress"><i id="bar"></i></span>
+      <span class="score-pill" id="score"><b>0</b> / 0 correct</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="filters" id="filters">
+    <button data-f="all" class="on">All 50</button>
+    <button data-f="7">Ch 7 · Mood</button>
+    <button data-f="8">Ch 8 · Anxiety</button>
+    <button data-f="9">Ch 9 · Pain</button>
+    <button data-f="10">Ch 10 · Sleep</button>
+  </div>
+  <div id="quiz"></div>
+  <div class="results" id="results">
+    <div class="big" id="rPct">0%</div>
+    <h2 id="rTitle">Finished</h2>
+    <p class="sub" id="rSub"></p>
+    <div class="breakdown" id="rBreak"></div>
+    <button class="restart" onclick="restart()">Restart quiz</button>
+  </div>
+  <footer>
+    Set D · Rationale and page references drawn from your Exam 3 study guide, the instructor's
+    Su26 review, the central sensitization notes, and Stahl's <i>Essential Psychopharmacology</i> (5th ed.).<br>
+    Verify exact page numbers against your own copy.
+  </footer>
+</div>
+
+<script>
+const QUESTIONS = [
+/* ---------------- CHAPTER 7 — MOOD DISORDERS (22) ---------------- */
+{ch:7,type:"single",
+ q:"Major depressive disorder has a lifetime prevalence of about 16\u201317%, with what sex ratio?",
+ o:[["Equal in men and women",0],["About 2:1 female to male",1],
+    ["About 3:1 male to female",0],["It occurs only in women",0]],
+ r:"MDD lifetime prevalence is ~16\u201317%, about 2:1 female. Bipolar I is ~1%, occurs equally in both sexes, with onset in the late teens to early 20s.",
+ ref:"Ch 7 \u00b7 epidemiology"},
+
+{ch:7,type:"single",
+ q:"Bipolar I disorder affects about 1% of the population, occurs equally in both sexes, and typically has onset:",
+ o:[["In early childhood",0],["In the late teens to early 20s",1],
+    ["After age 50",0],["Only postpartum",0]],
+ r:"Bipolar I \u2248 1% prevalence, equal in both sexes, with onset in the late teens to early 20s. MDD, by contrast, is ~2:1 female.",
+ ref:"Ch 7 \u00b7 epidemiology"},
+
+{ch:7,type:"single",
+ q:"A patient who had FULL recovery from depression develops a brand-new depressive episode months later. This is termed:",
+ o:[["Relapse",0],["Response",0],["Recurrence",1],["Remission",0]],
+ r:"Recurrence = depression returns AFTER full recovery (a new episode). Relapse = depression returns before full remission, or within the first months after remission.",
+ ref:"Ch 7 \u00b7 the \u201c5 R\u2019s\u201d"},
+
+{ch:7,type:"single",
+ q:"Most antidepressants raise monoamine levels by which primary action?",
+ o:[["Blocking the reuptake pump (SERT / NET / DAT)",1],
+    ["Blocking the postsynaptic receptor",0],
+    ["Inhibiting monoamine oxidase",0],["Stimulating the autoreceptor",0]],
+ r:"Most antidepressants block the reuptake pump (SERT, NET, DAT), keeping the transmitter in the synapse longer. MAOIs instead block the degrading enzyme; mirtazapine and trazodone block receptors.",
+ ref:"Ch 7 \u00b7 how antidepressants work"},
+
+{ch:7,type:"single",
+ q:"Blocking 5HT-2C receptors (as fluoxetine and mirtazapine do) produces which effect?",
+ o:[["Sedation and weight loss",0],
+    ["Disinhibition of NE and DA in the PFC \u2192 activating / antidepressant",1],
+    ["Nausea",0],["Bradycardia",0]],
+ r:"Blocking 5HT-2C disinhibits NE and DA in the prefrontal cortex \u2192 activating/antidepressant (fluoxetine, mirtazapine, agomelatine). Mirtazapine\u2019s 5HT-2C block also contributes to appetite/weight.",
+ ref:"Ch 7 \u00b7 serotonin receptors"},
+
+{ch:7,type:"single",
+ q:"Blocking 5HT-7 receptors (vortioxetine, trazodone) contributes to which benefits?",
+ o:[["Increased nausea",0],
+    ["Antidepressant, pro-cognitive, and improved sleep/circadian effects",1],
+    ["Sexual dysfunction",0],["Hypertension",0]],
+ r:"5HT-7 stimulation disrupts mood, circadian rhythm, and sleep; blocking it (vortioxetine, trazodone) is antidepressant, pro-cognitive, and improves sleep.",
+ ref:"Ch 7 \u00b7 serotonin receptors"},
+
+{ch:7,type:"single",
+ q:"Escitalopram 10 mg is approximately equivalent to which dose of citalopram?",
+ o:[["5 mg",0],["10 mg",0],["20 mg",1],["60 mg",0]],
+ r:"Escitalopram (the pure S-enantiomer) 10 mg \u2248 20 mg citalopram. It removes citalopram\u2019s R-enantiomer (antihistamine + QT risk), making it the \u201ccleanest\u201d SSRI.",
+ ref:"Ch 7 \u00b7 SSRIs"},
+
+{ch:7,type:"single",
+ q:"Which SSRI\u2019s sigma-1 binding makes it favored when depression occurs with psychotic features?",
+ o:[["Paroxetine",0],["Sertraline",1],["Citalopram",0],["Escitalopram",0]],
+ r:"Sertraline binds sigma-1 (and mildly inhibits DAT) \u2014 slightly activating and favored when psychotic features are present.",
+ ref:"Ch 7 \u00b7 SSRIs"},
+
+{ch:7,type:"single",
+ q:"Desvenlafaxine (Pristiq) is best described as:",
+ o:[["A pure serotonin reuptake inhibitor",0],
+    ["The active metabolite of venlafaxine, with more NET activity and less CYP2D6 variability",1],
+    ["An MAOI",0],["A tricyclic antidepressant",0]],
+ r:"Desvenlafaxine is the active metabolite of venlafaxine \u2014 more NET-weighted, with less CYP2D6 variability; main concern is increased blood pressure.",
+ ref:"Ch 7 \u00b7 SNRIs"},
+
+{ch:7,type:"single",
+ q:"Adding bupropion to an SSRI/SNRI (the \u201cTriple Action Combo\u201d) covers which three neurotransmitters and offsets which side effect?",
+ o:[["5-HT, GABA, glutamate; nausea",0],
+    ["5-HT, NE, and DA; sexual side effects",1],
+    ["DA only; weight gain",0],["Histamine, ACh, NE; sedation",0]],
+ r:"The \u201cTriple Action Combo\u201d adds bupropion to an SSRI/SNRI \u2192 covers 5-HT + NE + DA and offsets sexual side effects (bupropion has no serotonergic activity).",
+ ref:"Ch 7 \u00b7 augmentation"},
+
+{ch:7,type:"single",
+ q:"Which evidence-based augmentation strategy (from STAR*D) adds a thyroid hormone?",
+ o:[["Levothyroxine (T4)",0],["Liothyronine (T3)",1],
+    ["Methimazole",0],["Propylthiouracil",0]],
+ r:"T3 (liothyronine) is an evidence-based augmentation strategy from STAR*D for an inadequate antidepressant response.",
+ ref:"Ch 7 \u00b7 augmentation"},
+
+{ch:7,type:"single",
+ q:"Agomelatine treats depression and resets circadian rhythm by combining melatonin agonism with antagonism at which receptor?",
+ o:[["5HT-2C",1],["5HT-3",0],["D2",0],["H1",0]],
+ r:"Agomelatine = an MT1/MT2 melatonin agonist + a 5HT-2C antagonist \u2192 it resets the circadian rhythm with an antidepressant/activating effect.",
+ ref:"Ch 7 \u00b7 other antidepressants"},
+
+{ch:7,type:"single",
+ q:"Brexanolone, an IV neuroactive steroid for postpartum depression, acts at which receptor?",
+ o:[["NMDA glutamate receptor",0],
+    ["GABA-A receptor (allopregnanolone)",1],
+    ["D2 receptor",0],["5HT-1A receptor",0]],
+ r:"Brexanolone = IV allopregnanolone, a GABA-A neuroactive steroid for postpartum depression. Zuranolone is the oral version.",
+ ref:"Ch 7 \u00b7 other antidepressants"},
+
+{ch:7,type:"single",
+ q:"Auvelity, a rapid-acting oral antidepressant, combines bupropion with which NMDA antagonist (bupropion blocks its breakdown so it lasts)?",
+ o:[["Ketamine",0],["Dextromethorphan",1],["Memantine",0],["Lamotrigine",0]],
+ r:"Auvelity = dextromethorphan (an NMDA/glutamate antagonist) + bupropion (which blocks dextromethorphan\u2019s breakdown so it lasts). It is oral and rapid-acting.",
+ ref:"Ch 7 \u00b7 glutamate agents"},
+
+{ch:7,type:"single",
+ q:"When switching from FLUOXETINE to a TCA, the required washout is approximately:",
+ o:[["No washout needed",0],["2 days",0],["2 weeks",0],["5 weeks",1]],
+ r:"Standard SSRI \u2192 TCA washout is about 2 weeks, but 5 weeks if coming off fluoxetine, because of its very long half-life (active metabolite norfluoxetine).",
+ ref:"Ch 7 \u00b7 TCA pearls"},
+
+{ch:7,type:"single",
+ q:"A hypertensive crisis from tyramine in an MAOI patient can show which fundoscopic sign?",
+ o:[["Cotton-wool spots",0],["Retinal \u201cflame hemorrhages\u201d",1],
+    ["Papilledema only",0],["Cherry-red spot",0]],
+ r:"A tyramine-induced hypertensive crisis can produce retinal \u201cflame hemorrhages.\u201d Treat the crisis with phentolamine.",
+ ref:"Ch 7 \u00b7 MAOI dangers"},
+
+{ch:7,type:"single",
+ q:"Which agents stabilize mood \u201cfrom above\u201d (reducing or preventing the manic pole)?",
+ o:[["Lamotrigine and quetiapine",0],["Lithium and valproate",1],
+    ["Gabapentin and pregabalin",0],["Bupropion and fluoxetine",0]],
+ r:"\u201cFrom above\u201d (anti-manic) = lithium and valproate (plus atypicals acutely). \u201cFrom below\u201d (anti-depressive) = lamotrigine, quetiapine, and lurasidone.",
+ ref:"Ch 7 \u00b7 mood stabilizers"},
+
+{ch:7,type:"single",
+ q:"Because lithium can take up to ~10 days to control acute mania, clinicians typically bridge with:",
+ o:[["An SSRI",0],["An atypical antipsychotic",1],
+    ["A benzodiazepine alone, long term",0],["A TCA",0]],
+ r:"Lithium can take up to ~10 days to work, so acute mania is bridged with an atypical antipsychotic in the meantime.",
+ ref:"Ch 7 \u00b7 lithium"},
+
+{ch:7,type:"single",
+ q:"A lithium-stabilized patient develops hypothyroidism. The best management is to:",
+ o:[["Stop lithium immediately",0],
+    ["Add levothyroxine and continue lithium",1],
+    ["Switch to valproate without treating the thyroid",0],
+    ["Add T3 and stop monitoring",0]],
+ r:"Treat lithium-induced hypothyroidism with levothyroxine and continue the lithium (especially if it is working). Lithium is a goitrogen causing hypothyroidism in ~5\u201310%.",
+ ref:"Ch 7 \u00b7 lithium monitoring"},
+
+{ch:7,type:"single",
+ q:"Beyond bipolar mania, carbamazepine is also a classic treatment for:",
+ o:[["Migraine prophylaxis",0],["Trigeminal neuralgia",1],
+    ["Restless legs syndrome",0],["Fibromyalgia",0]],
+ r:"Carbamazepine (CBZ: Cranial nerve, Bipolar, seiZures) treats trigeminal neuralgia. Watch for agranulocytosis, CYP3A4 induction, hyponatremia, and SJS.",
+ ref:"Ch 7 \u00b7 mood stabilizers"},
+
+{ch:7,type:"single",
+ q:"Brexpiprazole is similar to aripiprazole but is generally preferred for which reason?",
+ o:[["It blocks dopamine completely",0],["It causes less akathisia",1],
+    ["It has no D2 activity",0],["It is more sedating than quetiapine",0]],
+ r:"Brexpiprazole is a D2/5HT1A partial agonist like aripiprazole, but with more potent \u03b11/\u03b12 and 5HT7 antagonism and D3 partial agonism \u2192 less akathisia; it is an adjunct for unipolar depression.",
+ ref:"Ch 7 \u00b7 augmentation"},
+
+{ch:7,type:"single",
+ q:"Which scenario most warrants referral to a psychiatrist (per the \u201cPSYCH MD\u201d list)?",
+ o:[["A first uncomplicated MDD responding to an SSRI",0],
+    ["Emergence of psychosis, suicidality, or suspected bipolarity",1],
+    ["Mild situational stress",0],["A patient asking about exercise",0]],
+ r:"Refer for Psychosis, Suicidality, \u201cWhy isn\u2019t this working,\u201d Comorbid disorders, Highs & lows (bipolar), and Monitoring Drugs like lithium \u2014 the PSYCH MD mnemonic.",
+ ref:"Ch 7 \u00b7 when to refer"},
+
+/* ---------------- CHAPTER 8 — ANXIETY & TRAUMA (11) ---------------- */
+{ch:8,type:"single",
+ q:"Acute stress disorder is distinguished from PTSD primarily by its timeframe of:",
+ o:[["More than 1 month",0],["3 days to 1 month",1],
+    ["More than 6 months",0],["Less than 3 days",0]],
+ r:"Acute stress disorder = trauma + dissociation/avoidance lasting 3 days to 1 month (usually treated with CBT, no meds). PTSD = symptoms lasting more than 1 month.",
+ ref:"Ch 8 \u00b7 definitions"},
+
+{ch:8,type:"single",
+ q:"Panic disorder is defined by recurrent UNEXPECTED panic attacks plus:",
+ o:[["A single identifiable stressor",0],
+    ["\u22651 month of worry about attacks or a behavior change",1],
+    ["Onset only in social settings",0],["Daily attacks for 6 months",0]],
+ r:"Panic disorder = recurrent UNEXPECTED panic attacks (peaking ~10 min) + \u22651 month of concern/worry about attacks or a related behavior change.",
+ ref:"Ch 8 \u00b7 definitions"},
+
+{ch:8,type:"single",
+ q:"Amygdala output to the parabrachial nucleus produces which physical symptom of fear?",
+ o:[["Freezing",0],["Increased respiratory rate / shortness of breath",1],
+    ["Increased cortisol",0],["Tremor",0]],
+ r:"The parabrachial nucleus \u2192 \u2191respiratory rate / shortness of breath. The PAG drives freezing; the HPA axis drives cortisol; the locus coeruleus drives \u2191NE (HR, tremor).",
+ ref:"Ch 8 \u00b7 amygdala pathways"},
+
+{ch:8,type:"single",
+ q:"In the benzodiazepine half-life mnemonic, which group is the MEDIUM-acting one (\u201cMedium CAT\u201d)?",
+ o:[["Triazolam, oxazepam, midazolam",0],
+    ["Chlordiazepoxide, alprazolam, temazepam",1],
+    ["Diazepam only",0],["Flurazepam, quazepam",0]],
+ r:"Medium CAT = Chlordiazepoxide, Alprazolam, Temazepam. Short TOM = Triazolam, Oxazepam, Midazolam; Long = Diazepam.",
+ ref:"Ch 8 \u00b7 benzo half-life"},
+
+{ch:8,type:"single",
+ q:"Giving a beta-blocker or opiate immediately after trauma may help prevent PTSD by:",
+ o:[["Speeding fear extinction",0],
+    ["Blocking memory consolidation of the traumatic event",1],
+    ["Increasing cortisol",0],["Enhancing the amygdala response",0]],
+ r:"Beta-blockers or opiates given right after trauma may block memory consolidation and help prevent PTSD. (D-cycloserine instead speeds extinction during later exposure therapy.)",
+ ref:"Ch 8 \u00b7 novel approaches"},
+
+{ch:8,type:"single",
+ q:"The \u201cworry\u201d circuit involves which regions, distinguishing it from the amygdala-based fear circuit?",
+ o:[["Amygdala and ACC",0],
+    ["The OFC and dorsolateral PFC (DLPFC)",1],
+    ["Cerebellum and pons",0],["Hypothalamus only",0]],
+ r:"Worry = the OFC + dorsolateral PFC (the CSTC loop). Fear is centered on the amygdala (with the ACC and OFC).",
+ ref:"Ch 8 \u00b7 fear vs worry"},
+
+{ch:8,type:"single",
+ q:"Successful fear extinction (the basis of exposure therapy) physically requires:",
+ o:[["Benzodiazepine receptor blockade",0],
+    ["BDNF-driven synapse growth to build a new inhibitory memory",1],
+    ["Destruction of the amygdala",0],["Increased cortisol",0]],
+ r:"Extinction is active new learning \u2014 the vmPFC/hippocampus build a new inhibitory \u201csafety\u201d memory that suppresses the amygdala, which requires BDNF-driven synapse growth.",
+ ref:"Ch 8 \u00b7 fear extinction"},
+
+{ch:8,type:"single",
+ q:"Why are SSRIs/SNRIs called a \u201cpsychiatric miracle drug,\u201d yet require patience in anxiety disorders?",
+ o:[["They work within hours",0],
+    ["They are first-line across anxiety disorders but have a delayed onset",1],
+    ["They are addictive",0],["They only treat panic",0]],
+ r:"SSRIs/SNRIs are first-line for GAD, panic, social anxiety, and PTSD (\u201cmiracle drug\u201d), but they have a delayed onset of weeks \u2014 unlike benzodiazepines, which work immediately.",
+ ref:"Ch 8 \u00b7 non-benzo anxiolytics"},
+
+{ch:8,type:"single",
+ q:"Prazosin, used for PTSD nightmares, carries which first-dose risk?",
+ o:[["Priapism",0],["First-dose orthostatic syncope",1],
+    ["Agranulocytosis",0],["Seizures",0]],
+ r:"Prazosin (\u201cPray\u201d) is an \u03b11 antagonist for PTSD nightmares; watch for first-dose orthostatic hypotension/syncope.",
+ ref:"Ch 8 \u00b7 non-benzo anxiolytics"},
+
+{ch:8,type:"single",
+ q:"A patient worries excessively about many things over the past year with no specific trigger. This favors which diagnosis over adjustment disorder?",
+ o:[["Panic disorder",0],["Generalized anxiety disorder",1],
+    ["Acute stress disorder",0],["Social anxiety disorder",0]],
+ r:"\u201cWorrier about everything\u201d for >6 months = GAD. Tied to a specific identifiable event and lasting <6 months = adjustment disorder.",
+ ref:"Ch 8 \u00b7 anxiety mnemonics"},
+
+{ch:8,type:"single",
+ q:"Which investigational psychotherapy adjunct has been studied for PTSD?",
+ o:[["MDMA-assisted therapy",1],["Long-term benzodiazepines",0],
+    ["High-dose caffeine",0],["Beta-blocker monotherapy",0]],
+ r:"MDMA-assisted therapy is investigational for PTSD. Standard care is SSRIs/SNRIs + trauma-focused CBT, with prazosin added for nightmares.",
+ ref:"Ch 8 \u00b7 treatment by disorder"},
+
+/* ---------------- CHAPTER 9 — CHRONIC PAIN (9) ---------------- */
+{ch:9,type:"single",
+ q:"Nociceptive pain is best defined as:",
+ o:[["Pain from a lesion of the nervous system",0],
+    ["Normal pain processing from actual or threatened tissue damage",1],
+    ["Pain with no tissue or nerve damage",0],["Pain that is always chronic",0]],
+ r:"Nociceptive pain = normal pain processing from actual or threatened tissue damage (injury, inflammation). Neuropathic = a nerve lesion; nociplastic = no clear damage.",
+ ref:"Ch 9 \u00b7 Table 9-1"},
+
+{ch:9,type:"single",
+ q:"A\u03b4 fibers primarily detect which type of stimulus?",
+ o:[["Light touch and vibration",0],
+    ["Noxious mechanical and thermal stimuli",1],
+    ["Only chemical irritants",0],["Proprioception",0]],
+ r:"A\u03b4 fibers detect noxious mechanical + thermal stimuli \u2192 fast, sharp \u201cfirst\u201d pain. C fibers detect mechanical/heat/chemical \u2192 slow, dull, burning pain.",
+ ref:"Ch 9 \u00b7 pain fibers"},
+
+{ch:9,type:"single",
+ q:"The opioid descending inhibitory pathway runs from the PAG through which brainstem relay to the dorsal horn?",
+ o:[["Locus coeruleus",0],["Rostroventromedial medulla (RVM)",1],
+    ["Raphe magnus",0],["Thalamus",0]],
+ r:"The opioid/endorphin pathway: PAG \u2192 RVM (rostroventromedial medulla) \u2192 dorsal horn, acting on \u03bc-opioid receptors \u2014 the system opioids amplify.",
+ ref:"Ch 9 \u00b7 descending modulation"},
+
+{ch:9,type:"single",
+ q:"The affective/emotional component of pain is conveyed from the dorsal horn through the brainstem to which region?",
+ o:[["The somatosensory cortex",0],["The limbic system",1],
+    ["The cerebellum",0],["The dorsal columns",0]],
+ r:"The emotional/motivational pain pathway: dorsal horn \u2192 brainstem \u2192 limbic system. The sensory/discriminatory (spinothalamic) pathway carries location + intensity to the somatosensory cortex.",
+ ref:"Ch 9 \u00b7 ascending tracts"},
+
+{ch:9,type:"single",
+ q:"Clonidine relieves pain by acting on which part of the descending modulatory system?",
+ o:[["The opioid \u03bc pathway",0],
+    ["The norepinephrine \u03b12 inhibitory pathway",1],
+    ["The serotonin facilitatory pathway",0],["Sodium channels",0]],
+ r:"Clonidine engages the NE descending pathway (locus coeruleus \u2192 dorsal horn, \u03b12 inhibition) \u2014 the same arm that SNRIs use for analgesia.",
+ ref:"Ch 9 \u00b7 descending modulation"},
+
+{ch:9,type:"single",
+ q:"In central sensitization, chronic pain produces \u201cintrinsic disinhibition,\u201d meaning:",
+ o:[["Pain sensation is lost entirely",0],
+    ["Intensity and duration become \u201cconfused\u201d so even minimal input is read as noxious",1],
+    ["Only peripheral nerves are affected",0],["Opioids become more effective",0]],
+ r:"Central sensitization alters synaptic plasticity/efficacy and produces intrinsic disinhibition \u2014 intensity and duration become \u201cconfused,\u201d so even minimal input is read as noxious. It is a core component of neuropathic pain.",
+ ref:"Ch 9, p. 395"},
+
+{ch:9,type:"single",
+ q:"Compared with first-line neuropathic agents, opioids carry which main drawback (beyond being no more effective)?",
+ o:[["They cause Stevens-Johnson syndrome",0],["Tolerance and dependence",1],
+    ["They prolong the QTc",0],["They cause agranulocytosis",0]],
+ r:"Opioids are not first-line \u2014 no better than SNRI/\u03b12\u03b4 agents, ineffective in fibromyalgia, and they carry tolerance and dependence risk.",
+ ref:"Ch 9 \u00b7 drug classes for pain"},
+
+{ch:9,type:"single",
+ q:"At the dorsal horn, glutamate released from primary afferents acts on which receptor to amplify central sensitization?",
+ o:[["GABA-A receptor",0],["NMDA receptor",1],
+    ["\u03bc-opioid receptor",0],["H1 receptor",0]],
+ r:"Glutamate (with substance P and CGRP) is released at the dorsal horn; its action at NMDA receptors drives the synaptic plasticity underlying central sensitization.",
+ ref:"Ch 9 \u00b7 dorsal horn"},
+
+{ch:9,type:"multi",
+ q:"Which agents are specifically associated with treating fibromyalgia?",
+ o:[["Duloxetine (SNRI)",1],["Milnacipran (SNRI)",1],
+    ["Pregabalin (\u03b12\u03b4 ligand)",1],["Opioids",0]],
+ r:"Duloxetine, milnacipran, and pregabalin are the agents specifically associated with fibromyalgia. Opioids are ineffective in fibromyalgia.",
+ ref:"Ch 9 \u00b7 fibromyalgia"},
+
+/* ---------------- CHAPTER 10 — SLEEP & WAKEFULNESS (8) ---------------- */
+{ch:10,type:"single",
+ q:"Serotonin from the raphe nuclei contributes to wakefulness and also does what to REM sleep?",
+ o:[["Promotes REM",0],["Suppresses REM",1],
+    ["Has no effect on REM",0],["Causes cataplexy",0]],
+ r:"Serotonin (raphe nuclei) supports wakefulness and SUPPRESSES REM. Acetylcholine, by contrast, promotes REM; histamine drives core wakefulness.",
+ ref:"Ch 10 \u00b7 arousal networks"},
+
+{ch:10,type:"single",
+ q:"Acetylcholine (from the brainstem / basal forebrain) is most associated with which sleep function?",
+ o:[["Deep N3 sleep",0],["REM sleep and cognitive focus",1],
+    ["Wake-promoting alertness alone",0],["Circadian timing",0]],
+ r:"Acetylcholine (brainstem/basal forebrain) \u2192 REM sleep + cognitive focus. (Serotonin suppresses REM; ACh promotes it.)",
+ ref:"Ch 10 \u00b7 arousal networks"},
+
+{ch:10,type:"single",
+ q:"Dopamine from the VTA contributes to which aspect of arousal?",
+ o:[["REM atonia",0],["The motivation to stay awake",1],
+    ["Circadian timing",0],["Slow-wave sleep",0]],
+ r:"Dopamine (VTA / substantia nigra) drives the motivation to stay awake \u2014 which is why modafinil (a weak DAT inhibitor) promotes wakefulness.",
+ ref:"Ch 10 \u00b7 arousal networks"},
+
+{ch:10,type:"single",
+ q:"Tasimelteon (an MT1/MT2 agonist) is specifically indicated for:",
+ o:[["Sleep-onset insomnia in adults",0],
+    ["Non-24-hour sleep\u2013wake disorder in totally blind patients",1],
+    ["Narcolepsy",0],["Restless legs syndrome",0]],
+ r:"Tasimelteon treats non-24-hour sleep\u2013wake disorder; totally blind people can\u2019t sense light to reset the clock, so it \u201cfree-runs.\u201d Ramelteon is for sleep-onset insomnia.",
+ ref:"Ch 10 \u00b7 melatonin agonists"},
+
+{ch:10,type:"single",
+ q:"Low-dose trazodone is used as a sleep aid in part because it increases:",
+ o:[["REM sleep",0],["Slow-wave (deep) sleep",1],
+    ["Sleep latency",0],["Nighttime awakenings",0]],
+ r:"Trazodone (blocks 5HT-2A, H1, \u03b11) increases slow-wave sleep and is a common real-world sleep aid; mirtazapine is also sedating.",
+ ref:"Ch 10 \u00b7 hypnotics"},
+
+{ch:10,type:"single",
+ q:"Why should OTC diphenhydramine be avoided as a sleep aid in the elderly?",
+ o:[["It is a controlled substance",0],
+    ["It blocks M1 (anticholinergic effects) and develops tolerance",1],
+    ["It causes priapism",0],["It dangerously prolongs the QTc",0]],
+ r:"Diphenhydramine (an H1 antagonist) also blocks M1 \u2192 anticholinergic effects (confusion, falls) and develops tolerance \u2014 so it should be avoided in the elderly.",
+ ref:"Ch 10 \u00b7 hypnotics"},
+
+{ch:10,type:"single",
+ q:"Armodafinil differs from modafinil in that it is:",
+ o:[["A controlled Schedule II stimulant",0],
+    ["The R-enantiomer only, with a longer (~15 h) half-life",1],
+    ["An orexin agonist",0],["A benzodiazepine",0]],
+ r:"Armodafinil = the R-enantiomer of modafinil (~15 h half-life). Both are weak DAT inhibitors for shift-work/OSA and reduce oral-contraceptive efficacy.",
+ ref:"Ch 10 \u00b7 wake-promoting agents"},
+
+{ch:10,type:"single",
+ q:"Why are benzodiazepines considered second-line for chronic insomnia?",
+ o:[["They have no effect on sleep",0],
+    ["They cause tolerance and rebound insomnia",1],
+    ["They are not sedating",0],["They block orexin",0]],
+ r:"Benzodiazepines (non-selective GABA-A PAMs) cause tolerance and rebound insomnia \u2192 second-line. Z-drugs are \u03b11-selective with less dependence; DORAs and ramelteon avoid dependence entirely.",
+ ref:"Ch 10 \u00b7 hypnotics"}
+];
+
+/* =========================  ENGINE  ========================= */
+let filter="all";
+const state={};
+QUESTIONS.forEach((q,i)=>state[i]={chosen:new Set(),locked:false,correct:null});
+const quizEl=document.getElementById("quiz");
+const barEl=document.getElementById("bar");
+const scoreEl=document.getElementById("score");
+const resultsEl=document.getElementById("results");
+function visibleIdx(){return QUESTIONS.map((q,i)=>i).filter(i=>filter==="all"||String(QUESTIONS[i].ch)===filter);}
+let cur=0;
+function render(){
+  const vis=visibleIdx();
+  if(cur>=vis.length)cur=vis.length-1;if(cur<0)cur=0;
+  const id=vis[cur],q=QUESTIONS[id],st=state[id],isMulti=q.type==="multi";
+  let opts=q.o.map((o,oi)=>{
+    const chosen=st.chosen.has(oi);let cls="";
+    if(st.locked){if(o[1])cls="correct";else if(chosen)cls="wrong";cls+=" locked";}
+    else if(chosen)cls="sel";
+    const mk=st.locked?(o[1]?"\u2713":(chosen?"\u2717":"")):(chosen?(isMulti?"\u2713":"\u25cf"):"");
+    return `<li class="${cls}" data-oi="${oi}"><span class="mark">${mk}</span><span class="otext">${o[0]}</span></li>`;
+  }).join("");
+  const showCheck=isMulti&&!st.locked;
+  const rat=st.locked?`<div class="rationale show ${st.correct?'ok':'no'}">
+      <div class="verdict">${st.correct?'\u2713 Correct':'\u2717 Review this'}</div>
+      <div>${q.r}</div><span class="ref">${q.ref}</span></div>`:`<div class="rationale"></div>`;
+  quizEl.innerHTML=`<div class="card">
+      <div class="qhead"><span class="qnum">Question ${cur+1} of ${vis.length}</span>
+      <span><span class="tag ch${q.ch}">Ch ${q.ch}</span>${isMulti?'<span class="tag sata">Select all</span>':''}</span></div>
+      <p class="qtext">${q.q}</p>
+      ${isMulti?'<p class="hint">Select every correct option, then check your answer.</p>':''}
+      <ul class="opts ${st.locked?'locked':''}" id="opts">${opts}</ul>
+      ${showCheck?`<button class="check-btn" id="check" ${st.chosen.size?'':'disabled'}>Check answer</button>`:''}
+      ${rat}
+      <div class="nav"><button id="prev" ${cur===0?'disabled':''}>\u2190 Previous</button>
+      <button class="next" id="next">${cur===vis.length-1?'Finish \u2192':'Next \u2192'}</button></div></div>`;
+  if(!st.locked){
+    document.getElementById("opts").querySelectorAll("li").forEach(li=>{
+      li.addEventListener("click",()=>{const oi=+li.dataset.oi;
+        if(isMulti){st.chosen.has(oi)?st.chosen.delete(oi):st.chosen.add(oi);render();}
+        else{st.chosen=new Set([oi]);lock(id);}});});
+  }
+  const cb=document.getElementById("check");if(cb)cb.addEventListener("click",()=>lock(id));
+  document.getElementById("prev").addEventListener("click",()=>{cur--;render();window.scrollTo({top:0,behavior:'smooth'});});
+  document.getElementById("next").addEventListener("click",()=>{
+    if(cur===vis.length-1){showResults();}else{cur++;render();window.scrollTo({top:0,behavior:'smooth'});}});
+  resultsEl.classList.remove("show");updateProgress();
+}
+function lock(id){
+  const q=QUESTIONS[id],st=state[id];st.locked=true;
+  const correctSet=new Set(q.o.map((o,i)=>o[1]?i:-1).filter(i=>i>=0));
+  st.correct=st.chosen.size===correctSet.size&&[...st.chosen].every(i=>correctSet.has(i));
+  render();updateProgress();
+}
+function updateProgress(){
+  const answered=Object.values(state).filter(s=>s.locked).length;
+  const correct=Object.values(state).filter(s=>s.locked&&s.correct).length;
+  barEl.style.width=(answered/QUESTIONS.length*100)+"%";
+  scoreEl.innerHTML=`<b>${correct}</b> / ${answered} correct`;
+}
+function showResults(){
+  const answered=Object.values(state).filter(s=>s.locked);
+  const correct=answered.filter(s=>s.correct).length;
+  const pct=answered.length?Math.round(correct/answered.length*100):0;
+  document.getElementById("rPct").textContent=pct+"%";
+  document.getElementById("rTitle").textContent=
+    pct>=90?"Outstanding \u2014 exam-ready":pct>=80?"Strong work":pct>=70?"Solid \u2014 keep drilling":"Keep reviewing";
+  document.getElementById("rSub").textContent=`${correct} of ${answered.length} answered questions correct.`;
+  const chs=[7,8,9,10],names={7:"Mood",8:"Anxiety",9:"Pain",10:"Sleep"};
+  document.getElementById("rBreak").innerHTML=chs.map(c=>{
+    const ids=QUESTIONS.map((q,i)=>i).filter(i=>QUESTIONS[i].ch===c&&state[i].locked);
+    const ok=ids.filter(i=>state[i].correct).length;
+    return `<div><div class="lab">Ch ${c} \u00b7 ${names[c]}</div>
+      <div class="val">${ids.length?ok+" / "+ids.length:"\u2014"}</div></div>`;}).join("");
+  quizEl.innerHTML="";resultsEl.classList.add("show");
+  window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'});
+}
+function restart(){
+  QUESTIONS.forEach((q,i)=>state[i]={chosen:new Set(),locked:false,correct:null});
+  filter="all";cur=0;
+  document.querySelectorAll("#filters button").forEach(b=>b.classList.toggle("on",b.dataset.f==="all"));
+  render();window.scrollTo({top:0,behavior:'smooth'});
+}
+document.getElementById("filters").addEventListener("click",e=>{
+  const b=e.target.closest("button");if(!b)return;filter=b.dataset.f;cur=0;
+  document.querySelectorAll("#filters button").forEach(x=>x.classList.toggle("on",x===b));
+  render();window.scrollTo({top:0,behavior:'smooth'});
+});
+render();
+</script>
+</body>
+</html>
