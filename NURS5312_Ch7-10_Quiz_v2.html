@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NURS 5312 – Exam 3 Practice Quiz (Chapters 7-10)</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f4f8;color:#1a2f5a;min-height:100vh}
+  header{background:linear-gradient(135deg,#1a2f5a,#0f3460);color:white;padding:24px 32px}
+  header h1{font-size:22px;font-weight:700}
+  header p{font-size:13px;opacity:.8;margin-top:4px}
+  .pbar{background:#0f3460;padding:10px 32px}
+  .ptrack{background:rgba(255,255,255,.2);border-radius:8px;height:8px}
+  .pfill{background:#f5a623;border-radius:8px;height:8px;transition:width .4s}
+  .ptext{color:rgba(255,255,255,.8);font-size:12px;margin-top:4px}
+  .wrap{max-width:780px;margin:32px auto;padding:0 16px}
+  .card{background:white;border-radius:12px;padding:28px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.08);border-left:5px solid #1a2f5a;display:none}
+  .card.active{display:block}
+  .qnum{font-size:12px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+  .qtag{display:inline-block;font-size:11px;background:#e8f3fb;color:#0f3460;border-radius:4px;padding:2px 8px;margin-bottom:12px}
+  .qtext{font-size:17px;font-weight:500;color:#1a2f5a;line-height:1.5;margin-bottom:20px}
+  .opts{display:flex;flex-direction:column;gap:10px}
+  .opt{background:#f7f9fc;border:2px solid #e4e7ed;border-radius:8px;padding:12px 16px;cursor:pointer;font-size:14px;transition:all .2s;display:flex;align-items:flex-start;gap:10px}
+  .opt:hover{border-color:#1a2f5a;background:#e8f3fb}
+  .opt.correct{border-color:#0f6e56;background:#e1f5ee;color:#085041}
+  .opt.incorrect{border-color:#ef233c;background:#fff0f2;color:#7f1d1d}
+  .ol{font-weight:700;min-width:22px;color:#1a2f5a}
+  .exp{margin-top:16px;background:#fef9ec;border-left:4px solid #f5a623;border-radius:6px;padding:12px 16px;font-size:13px;color:#5c3d11;display:none}
+  .exp.show{display:block}
+  .nav{display:flex;gap:12px;margin-top:24px;justify-content:space-between;align-items:center}
+  .btn{padding:11px 24px;border-radius:8px;border:none;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s}
+  .btnp{background:#1a2f5a;color:white}.btnp:hover{background:#0f3460}
+  .btns{background:#e4e7ed;color:#1a2f5a}.btns:hover{background:#d0d4db}
+  .btn:disabled{opacity:.4;cursor:not-allowed}
+  .score{background:white;border-radius:12px;padding:40px;text-align:center;box-shadow:0 4px 16px rgba(0,0,0,.1);display:none}
+  .score.show{display:block}
+  .sbig{font-size:64px;font-weight:700;color:#1a2f5a}
+  .slbl{font-size:18px;color:#888;margin-top:4px}
+  .smsg{font-size:16px;margin:20px 0;padding:16px;border-radius:8px}
+  .ga{background:#e1f5ee;color:#085041}.gb{background:#e8f3fb;color:#0c447c}
+  .gc{background:#fef9ec;color:#5c3d11}.gf{background:#fff0f2;color:#7f1d1d}
+  .rgrid{display:grid;grid-template-columns:repeat(10,1fr);gap:6px;margin:20px 0}
+  .rdot{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:white;cursor:pointer}
+  .dok{background:#0f6e56}.dno{background:#ef233c}
+  .chb{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin:20px 0}
+  .chbox{background:#f7f9fc;border-radius:8px;padding:12px;text-align:center}
+  .chbox h4{font-size:12px;color:#888;margin-bottom:6px}
+  .chbox p{font-size:20px;font-weight:700;color:#1a2f5a}
+</style>
+</head>
+<body>
+<header>
+  <h1>NURS 5312 – Psychopharmacology</h1>
+  <p>Exam 3 Practice Quiz · Chapters 7–10 · Mood Disorders, Anxiety/Trauma, Pain, Sleep · 50 NP-Level Questions</p>
+</header>
+<div class="pbar">
+  <div class="ptrack"><div class="pfill" id="pf" style="width:2%"></div></div>
+  <div class="ptext" id="pt">Question 1 of 50</div>
+</div>
+<div class="wrap" id="qwrap"></div>
+<div class="wrap">
+  <div class="score" id="sc">
+    <div class="sbig" id="spct">0%</div>
+    <div class="slbl" id="sraw">0 / 50</div>
+    <div class="smsg" id="smsg"></div>
+    <div class="chb" id="chb"></div>
+    <p style="font-size:13px;color:#888;margin-bottom:10px">Click a circle to review that question</p>
+    <div class="rgrid" id="rg"></div>
+    <button class="btn btnp" style="margin-top:20px" onclick="restart()">Restart Quiz</button>
+  </div>
+</div>
+<script>
+const Q=[
+// ════════ CHAPTER 7: MOOD DISORDERS (25 questions) ════════
+{c:7,t:"Treatment Goals",
+ q:"A patient with major depressive disorder has experienced a 50% reduction in symptom severity after 8 weeks of sertraline but still reports residual low energy and poor concentration. According to current treatment standards, what should guide the NP's next step?",
+ o:["Continue the current dose unchanged, since a 50% reduction meets the historical treatment goal","Discontinue sertraline immediately, since lack of full symptom resolution indicates treatment failure","Pursue dose optimization or augmentation, since the current standard of care is full remission, not partial response","Switch to a benzodiazepine to manage the residual concentration difficulties"],
+ a:2,e:"A 50% symptom reduction is classified as RESPONSE. The MODERN treatment goal is REMISSION (complete symptom resolution). Since residual symptoms remain (low energy, poor concentration), the NP should pursue dose optimization or augmentation targeting those specific symptoms rather than accepting partial improvement as the endpoint."},
+
+{c:7,t:"SSRI Secondary Mechanisms",
+ q:"A 34-year-old female with depression characterized by hypersomnia, significant fatigue, and psychomotor retardation is being considered for an SSRI. Which agent's secondary receptor mechanism makes it the most rational choice for this specific symptom profile?",
+ o:["Paroxetine, due to its anticholinergic properties","Fluoxetine, due to its 5-HT2C antagonism","Fluvoxamine, due to its sigma-1 receptor binding","Citalopram, due to its antihistamine properties"],
+ a:1,e:"Fluoxetine's 5-HT2C ANTAGONISM disinhibits dopamine and norepinephrine release in the PFC, producing an activating/energizing effect well-suited for depression with hypersomnia, fatigue, and psychomotor retardation. Paroxetine's anticholinergic properties produce a calming, sedating effect — the opposite of what this patient needs."},
+
+{c:7,t:"SSRI Secondary Mechanisms",
+ q:"Why is escitalopram generally more predictable at low starting doses than citalopram, despite escitalopram simply being a component of citalopram?",
+ o:["Escitalopram has a completely different receptor mechanism than citalopram","Citalopram's inactive R-enantiomer interferes with the active S-enantiomer's ability to inhibit SERT; escitalopram removes this interference","Citalopram requires renal dosing adjustments that escitalopram does not require","Escitalopram is absorbed twice as fast as citalopram in the GI tract"],
+ a:1,e:"Citalopram is a racemic mixture; its R-enantiomer contributes weak antihistamine effects and actively interferes with the S-enantiomer's SERT-blocking efficiency. Escitalopram removes the interfering R-enantiomer, so every molecule contributes useful SERT inhibition — explaining its predictable efficacy even at the lowest starting dose."},
+
+{c:7,t:"SSRI Secondary Mechanisms",
+ q:"A patient reports significant sexual dysfunction and the worst withdrawal symptoms she has ever experienced after abruptly stopping her antidepressant. Which SSRI is she MOST likely to have been taking?",
+ o:["Escitalopram","Fluoxetine","Paroxetine","Sertraline"],
+ a:2,e:"Paroxetine has the highest rate of sexual dysfunction among SSRIs (partly due to nitric oxide synthase inhibition) and the worst discontinuation syndrome of the class, caused by its short half-life combined with anticholinergic rebound when stopped abruptly."},
+
+{c:7,t:"SPARI Mechanism",
+ q:"Vilazodone is classified as a Serotonin Partial Agonist Reuptake Inhibitor (SPARI). Which sequence correctly describes its proposed mechanism of action?",
+ o:["It blocks SERT only, with an onset identical to standard SSRIs","It occupies SERT and the 5-HT1A autoreceptor simultaneously, causing faster autoreceptor desensitization and a more robust rise in serotonergic transmission","It blocks norepinephrine and dopamine transporters with no serotonergic activity","It functions purely as a postsynaptic 5-HT2A antagonist"],
+ a:1,e:"SPARIs achieve dual, immediate occupancy of SERT and the 5-HT1A somatodendritic autoreceptor in one molecule. Because the autoreceptor is addressed immediately rather than through weeks of natural desensitization, the theorized result is a faster, more robust rise in synaptic serotonin than SERT blockade alone."},
+
+{c:7,t:"SNRI Mechanism",
+ q:"A patient with major depressive disorder and comorbid fibromyalgia is being started on an antidepressant. Which class is the most evidence-based choice given both conditions?",
+ o:["SSRIs, because SERT blockade alone treats both conditions equally well","SNRIs, because norepinephrine transporter inhibition enhances descending pain-inhibiting pathways in the spinal cord","NDRIs, because dopamine blockade is the primary fibromyalgia mechanism","Benzodiazepines, because GABA enhancement treats pain directly"],
+ a:1,e:"SNRIs (particularly duloxetine) have established, FDA-approved efficacy for chronic pain conditions including fibromyalgia, attributable to NET inhibition enhancing descending noradrenergic pain-modulation pathways in the spinal cord. SSRIs lack this established pain efficacy."},
+
+{c:7,t:"SNRI Mechanism — Dose Dependency",
+ q:"A patient on venlafaxine 75mg daily shows partial response. The NP increases the dose to 225mg daily and notes improved efficacy along with new mild hypertension. What pharmacological principle explains both observations?",
+ o:["Venlafaxine's norepinephrine transporter inhibition increases at higher doses, raising both efficacy and blood pressure","Venlafaxine converts to a dopamine agonist only above 150mg daily","The dose increase triggered an unrelated drug interaction","Hypertension at this dose is an idiosyncratic reaction with no pharmacological basis"],
+ a:0,e:"Venlafaxine's NET inhibition is dose-dependent — predominantly serotonergic at low doses, recruiting progressively more noradrenergic activity at higher doses. This explains both improved efficacy AND the known risk of dose-dependent blood pressure elevation from increased noradrenergic tone."},
+
+{c:7,t:"NDRI Mechanism — Bupropion",
+ q:"A patient with depression characterized by anhedonia, low motivation, and reduced libido who also smokes daily asks about switching from sertraline due to sexual side effects. Which medication addresses this symptom profile while offering an additional benefit for this patient?",
+ o:["Paroxetine, for its sedating effects","Bupropion, an agent with no serotonergic activity that targets motivation-related symptoms and has separate efficacy for smoking cessation","Mirtazapine, for its appetite-stimulating effects","Fluvoxamine, for its anxiolytic properties"],
+ a:1,e:"Bupropion's mechanism (NET + DAT blockade, no SERT activity) specifically targets the symptom cluster of anhedonia, low motivation, and reduced libido. It also avoids sexual dysfunction since it lacks serotonergic activity, and has separate, established efficacy for smoking cessation — directly relevant to this patient."},
+
+{c:7,t:"NDRI Mechanism — Seizure Risk",
+ q:"A patient with a history of bulimia nervosa and well-controlled depression on sertraline asks about adding bupropion for residual low motivation. What is the most important safety consideration?",
+ o:["There are no significant safety concerns in this population","Eating disorders with purging behavior increase seizure risk, and bupropion independently lowers the seizure threshold, making the combination generally contraindicated","Bupropion will worsen the eating disorder through appetite suppression alone","There is no known interaction between bupropion and sertraline"],
+ a:1,e:"Bupropion lowers the seizure threshold. Patients with eating disorders involving purging (electrolyte disturbances increase seizure risk independently) are at elevated risk, and bupropion is generally considered contraindicated in active or recent bulimia nervosa."},
+
+{c:7,t:"NDRI Mechanism — DAT Occupancy",
+ q:"Why is bupropion not classified as a controlled substance despite blocking the same dopamine transporter (DAT) targeted by cocaine?",
+ o:["Bupropion does not actually bind DAT","The speed and duration of DAT occupancy, not simply the binding target, determines abuse potential — bupropion produces slow, sustained occupancy rather than the rapid, high-magnitude occupancy associated with abusable stimulants","Bupropion only acts in the spinal cord","Bupropion is fully metabolized before reaching the brain"],
+ a:1,e:"Abuse potential is determined by the speed and pattern of transporter occupancy, not simply which transporter is blocked. Fast, high-magnitude, short-duration DAT occupancy (cocaine, methamphetamine) produces euphoria and reinforcement. Bupropion's slow-onset, sustained, lower-magnitude occupancy does not produce this reinforcing effect."},
+
+{c:7,t:"Mirtazapine Mechanism",
+ q:"Mirtazapine increases both serotonin and norepinephrine release through which mechanism, distinct from how SSRIs or SNRIs work?",
+ o:["Direct reuptake pump blockade, identical to SNRIs","Alpha-2 receptor antagonism, removing inhibitory feedback on both the serotonin and norepinephrine systems simultaneously","Direct stimulation of postsynaptic dopamine D2 receptors","Inhibition of monoamine oxidase in the presynaptic neuron"],
+ a:1,e:"Mirtazapine's primary mechanism is alpha-2 antagonism, not reuptake pump blockade. It blocks alpha-2 heteroreceptors on serotonin neurons and alpha-2 autoreceptors on norepinephrine neurons, removing inhibitory feedback on both systems simultaneously — described as 'cutting the brake cable' on both at once."},
+
+{c:7,t:"Mirtazapine — 5-HT3 Mechanism",
+ q:"A patient switched from an SSRI to mirtazapine reports significantly less nausea and GI upset. Which receptor mechanism explains this clinical observation?",
+ o:["5-HT1A agonism reducing gut motility","H1 antagonism slowing gastric emptying","5-HT3 antagonism, blocking the receptor responsible for nausea signals in the gut and brainstem","Alpha-1 antagonism reducing vascular tone in the GI tract"],
+ a:2,e:"5-HT3 receptors are ligand-gated ion channels on GI nerve endings and in the brainstem chemoreceptor trigger zone, mediating nausea and vomiting. Mirtazapine's 5-HT3 antagonism blocks these signals, explaining its milder GI side effect profile compared to SSRIs."},
+
+{c:7,t:"Mirtazapine — H1 Mechanism",
+ q:"Which patient profile would be the best candidate for mirtazapine based on its receptor binding profile?",
+ o:["A patient with significant weight gain concerns who needs an activating agent","A depressed patient with insomnia and poor appetite","An anxious, agitated patient who needs additional activation","A patient with a seizure disorder who needs to avoid lowering seizure threshold"],
+ a:1,e:"Mirtazapine's potent H1 antagonism produces sedation and increased appetite, making it well-suited for depressed patients struggling with insomnia and poor appetite, but a poor choice for patients concerned about weight gain or needing an activating profile."},
+
+{c:7,t:"SARI Mechanism — Trazodone",
+ q:"Trazodone is sometimes described as functioning like two different drugs depending on the dose. What is the pharmacological basis for this statement?",
+ o:["Trazodone has two unrelated active metabolites that activate independently of dose","At low doses, trazodone engages its highest-affinity receptors producing sedation; at higher doses it recruits additional lower-affinity actions including meaningful SERT inhibition, producing antidepressant effects","Trazodone's effects are entirely random and unrelated to dose","Trazodone functions only as an antidepressant regardless of dose"],
+ a:1,e:"Trazodone binds multiple receptors with different affinities. At low doses, only its highest-affinity receptors are engaged, producing sedation useful for insomnia. At higher doses, additional lower-affinity mechanisms are recruited, including meaningful SERT inhibition, producing antidepressant effects but often with significant daytime sedation."},
+
+{c:7,t:"SARI Clinical Use",
+ q:"Why is trazodone most commonly prescribed in clinical practice at low doses rather than at full antidepressant doses?",
+ o:["Trazodone has no antidepressant efficacy at any dose","Low-dose trazodone treats residual insomnia after first-line antidepressant treatment without causing sexual dysfunction or weight gain, while full antidepressant doses cause significant daytime sedation","Low-dose trazodone requires renal dosing while high-dose does not","Trazodone is contraindicated at antidepressant doses in all patients"],
+ a:1,e:"Trazodone at low, sub-antidepressant doses is frequently used as a sleep aid for residual insomnia after starting an SSRI or SNRI, without causing sexual dysfunction or weight gain. Full antidepressant doses of the immediate-release formulation cause significant daytime sedation, limiting practical use at that dose level."},
+
+{c:7,t:"Lithium Mechanism",
+ q:"Lithium's proposed neuroprotective mechanism involves inhibition of which downstream signaling molecule?",
+ o:["Monoamine oxidase","Cytochrome P450 2D6","GSK-3, reducing pro-apoptotic signaling","Acetylcholinesterase"],
+ a:2,e:"Lithium inhibits GSK-3, a downstream phosphoprotein in the neurotrophin signaling cascade that normally promotes pro-apoptotic (cell-death-promoting) signaling. Inhibiting GSK-3 theoretically reduces this signaling, contributing to a proposed neuroprotective effect distinct from any receptor or transporter mechanism."},
+
+{c:7,t:"Lithium — Clinical Pearls",
+ q:"A patient on lithium maintenance therapy starts a low-sodium diet for new hypertension and also begins ibuprofen for joint pain. What is the NP's most important concern?",
+ o:["These changes have no clinically significant interaction with lithium","Both changes can increase renal lithium reabsorption, raising lithium levels and toxicity risk","Ibuprofen will decrease lithium levels, requiring a dose increase","A low-sodium diet always requires a lithium dose increase to maintain efficacy"],
+ a:1,e:"Lithium is excreted renally and competes with sodium for reabsorption. A low-sodium diet causes the kidney to reabsorb more sodium, and consequently more lithium. NSAIDs reduce renal blood flow and lithium clearance. Both changes together place this patient at significant risk for lithium toxicity."},
+
+{c:7,t:"Lithium — Unique Clinical Benefit",
+ q:"A patient with bipolar I disorder and a history of multiple suicide attempts is being started on maintenance mood stabilizer therapy. Which agent has the strongest evidence specifically for reducing suicide risk in this population?",
+ o:["Valproate","Carbamazepine","Lamotrigine","Lithium"],
+ a:3,e:"Lithium is the only mood stabilizer with robust evidence specifically demonstrating reduced suicide risk in bipolar disorder, a benefit not consistently shown with valproate, carbamazepine, or lamotrigine."},
+
+{c:7,t:"Anticonvulsant Mood Stabilizers",
+ q:"A patient with bipolar disorder is in an acute manic episode. Which mood stabilizer would be the least appropriate choice based on its specific indication profile?",
+ o:["Valproate","Carbamazepine","Lithium","Lamotrigine"],
+ a:3,e:"Lamotrigine is effective for bipolar depression but is not effective for treating acute mania, an asymmetric indication that distinguishes it from valproate, carbamazepine, and lithium, all of which have efficacy for acute mania."},
+
+{c:7,t:"Anticonvulsant Mechanisms",
+ q:"Lamotrigine's mood-stabilizing mechanism is based on which property of voltage-sensitive sodium channels?",
+ o:["Uniform blockade of all sodium channels regardless of firing rate","Preferential binding to channels that are firing rapidly, with less effect on normally-firing neurons","Permanent, irreversible channel blockade","Selective blockade limited to the cerebellum"],
+ a:1,e:"Lamotrigine exhibits use-dependent blockade, preferentially binding sodium channels in the open or inactivated state, which occurs more frequently in rapidly firing neurons. Normally-firing neurons are relatively spared, allowing stabilization without complete suppression of neuronal activity."},
+
+{c:7,t:"Augmentation Strategy — Triple Action",
+ q:"A patient with depression and partial response to an SSRI is started on adjunctive bupropion. What is the rationale for this combination?",
+ o:["Bupropion will replace the need for the SSRI entirely","Adding norepinephrine and dopamine effects alongside the SSRI's serotonergic effect addresses a broader range of symptoms than either drug alone","Bupropion counteracts and cancels the SSRI's therapeutic effect","This combination carries no clinical rationale and is rarely used"],
+ a:1,e:"SSRI plus bupropion is a popular augmentation strategy that modulates serotonin, norepinephrine, and dopamine simultaneously, particularly useful when patients have residual apathy or anhedonia that the SSRI alone does not resolve."},
+
+{c:7,t:"Augmentation Strategy — California Rocket Fuel",
+ q:"The combination of an SNRI plus mirtazapine is sometimes called 'California Rocket Fuel.' What is the pharmacological rationale for combining these two agents?",
+ o:["Both drugs share an identical mechanism, simply doubling SERT blockade","One drug blocks reuptake pumps while the other removes inhibitory feedback on release, producing synergistic enhancement through two different mechanisms","Mirtazapine blocks the SNRI's mechanism, requiring a higher SNRI dose","This combination affects dopamine exclusively"],
+ a:1,e:"The SNRI blocks reuptake pumps (SERT/NET) while mirtazapine removes inhibitory feedback on release (alpha-2 antagonism). Approaching the same neurotransmitter systems through two different mechanisms produces significant synergistic enhancement."},
+
+{c:7,t:"Augmentation Strategy — Atypical Antipsychotics",
+ q:"Which group of medications represents the modern, more commonly used replacement for buspirone as an augmentation strategy in treatment-resistant depression?",
+ o:["SSRIs alone at higher doses","Quetiapine, aripiprazole, brexpiprazole, and cariprazine","Benzodiazepines","First-generation antipsychotics such as haloperidol"],
+ a:1,e:"Modern practice has largely shifted toward atypical antipsychotics with 5-HT1A partial agonist properties — quetiapine, aripiprazole, brexpiprazole, and cariprazine — as augmentation agents, achieving a similar mechanism to buspirone through newer agents."},
+
+{c:7,t:"Agomelatine Mechanism",
+ q:"Agomelatine's dual mechanism of action includes which two receptor activities?",
+ o:["SERT inhibition and D2 antagonism","Melatonin receptor agonism and 5-HT2C antagonism","Norepinephrine transporter inhibition and H1 antagonism","GABA-A potentiation and NMDA antagonism"],
+ a:1,e:"Agomelatine combines melatonin 1/2 receptor agonism, resynchronizing circadian rhythms at the suprachiasmatic nucleus, with 5-HT2C antagonism, disinhibiting dopamine and norepinephrine release in the prefrontal cortex for an antidepressant effect."},
+
+{c:7,t:"Treatment Resistant Depression Strategies",
+ q:"A patient has failed adequate trials of two different SSRIs at maximum tolerated doses. According to a stepwise approach to treatment-resistant depression, what is generally considered next before moving to augmentation strategies?",
+ o:["Immediately starting electroconvulsive therapy regardless of severity","A trial of a different antidepressant class with a distinct mechanism, such as an SNRI, NDRI, or SARI, before adding a second agent","Discontinuing all pharmacotherapy and relying solely on psychotherapy","Doubling the dose of the second failed SSRI well beyond the maximum recommended range"],
+ a:1,e:"A stepwise approach to treatment-resistant depression generally favors switching to a different mechanistic class (SNRI, NDRI, SARI, or mirtazapine) after failure of one drug class, reserving combination or augmentation strategies for cases where a reasonable monotherapy trial of a distinct mechanism has also failed."},
+
+{c:8,t:"Affect of Fear — Amygdala Connections",
+ q:"The subjective feeling of fear is primarily regulated by reciprocal connections between the amygdala and which two prefrontal cortex regions?",
+ o:["Dorsolateral prefrontal cortex and Broca's area","Orbitofrontal cortex and anterior cingulate cortex","Wernicke's area and the angular gyrus","Primary motor cortex and primary somatosensory cortex"],
+ a:1,e:"The subjective feeling of fear is regulated by reciprocal amygdala connections with the orbitofrontal cortex and anterior cingulate cortex, both key emotion-regulating regions distinct from the separate circuits governing motor or endocrine fear responses."},
+
+{c:8,t:"Symptom Domains Across Anxiety Disorders",
+ q:"A patient with social anxiety disorder reports anticipatory dread before social events, along with full-blown panic symptoms specifically in those expected social situations. How does this pattern of circuit activation differ from panic disorder, according to Stahl's framework?",
+ o:["Social anxiety involves entirely separate neuroanatomy from panic disorder","In social anxiety, catastrophic circuit activation occurs in an expected, situation-specific manner, whereas in panic disorder it occurs unexpectedly without a clear situational trigger","Social anxiety never involves amygdala activation, unlike panic disorder","There is no meaningful distinction between social anxiety and panic disorder presentations"],
+ a:1,e:"Stahl's framework proposes that social anxiety disorder reflects catastrophic circuit malfunctioning that occurs in an EXPECTED, situation-specific manner (tied to anticipated social exposure), distinguishing it from panic disorder, where similarly catastrophic activation occurs UNEXPECTEDLY without a clear precipitating trigger, despite both engaging the same underlying amygdala and CSTC circuitry."},
+
+{c:8,t:"Amygdala and Fear Circuitry",
+ q:"A patient with chronic, poorly controlled anxiety develops new hypertension and elevated fasting glucose. Which neurobiological mechanism explains this clinical pattern?",
+ o:["Chronic amygdala-hypothalamus signaling drives sustained HPA axis and cortisol activity, which over time is associated with cardiometabolic disease","Anxiety has no physiological connection to cardiometabolic outcomes","This pattern is coincidental and unrelated to the patient's anxiety","Anxiety directly damages the pancreas through a separate, unrelated pathway"],
+ a:0,e:"The amygdala has reciprocal connections with the hypothalamus, triggering HPA axis activation and cortisol release during fear responses. Chronic, persistent activation is associated with increased rates of coronary artery disease, type 2 diabetes, stroke, and hippocampal atrophy."},
+
+{c:8,t:"Amygdala — Respiratory Connections",
+ q:"A patient experiencing a panic attack reports a sensation of being smothered and shortness of breath despite normal oxygen saturation. Which connection explains this symptom?",
+ o:["Direct lung tissue damage from anxiety","Amygdala connections to the parabrachial nucleus regulate respiratory rate, and excessive activation produces subjective breathing symptoms independent of actual oxygenation","Hyperventilation that is unrelated to any specific brain circuit","An undiagnosed cardiac condition presenting as anxiety"],
+ a:1,e:"The amygdala connects to the parabrachial nucleus in the brainstem, which regulates respiratory rate. Excessive activation of this circuit produces subjective shortness of breath and a smothering sensation, common features of panic attacks, independent of actual oxygenation status."},
+
+{c:8,t:"PTSD Reclassification",
+ q:"How is PTSD currently classified, and what distinguishes it from anxiety disorders?",
+ o:["PTSD remains classified purely as an anxiety disorder","PTSD is classified as a stress-related disorder, characterized by persistent hyperarousal following a traumatic exposure","PTSD is classified as a mood disorder with no anxiety component","PTSD is classified as a psychotic disorder"],
+ a:1,e:"PTSD is classified as a stress-related disorder rather than an anxiety disorder, distinguished by its trauma-induced origin and a clinical picture centered on persistent hyperarousal, re-experiencing symptoms, sleep disturbance, and avoidance behaviors."},
+
+{c:8,t:"Pharmacotherapy — First-Line Treatment",
+ q:"What is the first-line pharmacological treatment class for most anxiety disorders and PTSD?",
+ o:["Benzodiazepines, due to rapid onset","Atypical antipsychotics, due to broad receptor binding","Agents that increase serotonin and norepinephrine signaling, the same mechanisms used in depression treatment","Barbiturates, due to potent GABA-A activation"],
+ a:2,e:"SSRIs and SNRIs are first-line for most anxiety disorders and PTSD, leveraging the same serotonergic and noradrenergic mechanisms used in depression, consistent with significant comorbidity and overlapping circuit dysfunction between these conditions."},
+
+{c:8,t:"Pharmacotherapy — PTSD-Specific Agent",
+ q:"A combat veteran with PTSD reports severe, recurrent nightmares that have not responded adequately to sertraline. Which adjunctive medication has the most specific evidence for this symptom?",
+ o:["Prazosin, an alpha-1 antagonist","Haloperidol, a D2 antagonist","Diphenhydramine, an H1 antagonist","Metoprolol, a beta-1 selective blocker"],
+ a:0,e:"Prazosin, an alpha-1 antagonist, has specific evidence for reducing PTSD-related nightmares by blocking excessive noradrenergic signaling implicated in trauma-related hyperarousal during sleep. This is a distinguishing clinical pearl for this specific symptom."},
+
+{c:8,t:"Benzodiazepine Role in Anxiety",
+ q:"Why are benzodiazepines generally appropriate only for short-term use in anxiety disorders despite their rapid onset?",
+ o:["Benzodiazepines have no efficacy for anxiety symptoms","Long-term use carries risks of dependence, tolerance, and cognitive impairment, making serotonergic agents preferred for sustained treatment despite their slower onset","Benzodiazepines are contraindicated in all anxiety disorders","Benzodiazepines work only for panic disorder, not other anxiety presentations"],
+ a:1,e:"While benzodiazepines provide rapid symptomatic relief, their risk profile for long-term use makes them generally inappropriate as first-line long-term therapy. Serotonergic and noradrenergic agents, despite requiring weeks for full effect, are preferred for sustained management."},
+
+{c:8,t:"Alpha-2 Agonists in PTSD",
+ q:"Clonidine and guanfacine are sometimes used adjunctively in PTSD treatment. What is their proposed mechanism for addressing hyperarousal symptoms?",
+ o:["They block NMDA receptors to prevent traumatic memory consolidation","As alpha-2 agonists, they reduce overall noradrenergic outflow, dampening excessive signaling that drives hyperarousal","They directly block serotonin reuptake","They act as 5-HT2A antagonists to reduce intrusive flashbacks"],
+ a:1,e:"Clonidine and guanfacine, as alpha-2 agonists, stimulate alpha-2 autoreceptors on norepinephrine neurons, reducing overall noradrenergic outflow and dampening the excessive signaling characteristic of PTSD hyperarousal, used adjunctively with first-line agents."},
+
+{c:8,t:"Buspirone Mechanism in Anxiety",
+ q:"How does buspirone's mechanism for treating generalized anxiety disorder relate to the mechanism built into SPARI antidepressants?",
+ o:["Buspirone works through an unrelated mechanism involving GABA-A potentiation","Buspirone engages the same somatodendritic autoreceptor mechanism as SPARIs, but as a standalone agent without any reuptake inhibition component","Buspirone works exclusively through dopamine D2 antagonism","Buspirone is a benzodiazepine derivative with similar dependence risk"],
+ a:1,e:"Buspirone is a standalone 5-HT1A partial agonist, engaging the same somatodendritic autoreceptor mechanism that SPARIs have built directly into their molecular structure alongside SERT inhibition, but without any reuptake component."},
+
+{c:8,t:"Pregabalin/Gabapentin for GAD",
+ q:"A patient with generalized anxiety disorder and comorbid neuropathic pain is considered for pregabalin. What is its mechanism of action?",
+ o:["Direct activation of GABA-A receptors","Binding the alpha-2-delta subunit of voltage-gated calcium channels, reducing glutamate and substance P release","Blocking NMDA receptors","Inhibiting the serotonin transporter"],
+ a:1,e:"Pregabalin binds the alpha-2-delta subunit of voltage-gated calcium channels, reducing calcium influx at axon terminals and decreasing release of glutamate and substance P, despite its name's similarity to GABA. This explains its dual utility for both neuropathic pain and generalized anxiety disorder."},
+
+{c:8,t:"Disorder-Specific Symptom Patterns",
+ q:"According to Stahl's circuit-based model, what differentiates generalized anxiety disorder from panic disorder, even though both involve the same underlying circuits?",
+ o:["GAD involves a completely different brain region than panic disorder","Malfunctioning in GAD may be persistent but low-severity, while in panic disorder it may be intermittent but catastrophic, reflecting different patterns of dysfunction within the same circuits","GAD only affects the amygdala while panic disorder only affects the cortico-striato-thalamo-cortical circuit","There is no meaningful circuit-level difference between the two disorders"],
+ a:1,e:"Different anxiety disorder presentations may reflect different patterns of malfunctioning within the same amygdala-centered and cortico-striato-thalamo-cortical circuits. GAD tends toward persistent, low-severity dysfunction, while panic disorder shows intermittent, catastrophic activation."},
+
+// ════════ CHAPTER 9: CHRONIC PAIN (6 questions) ════════
+{c:9,t:"SNRI/TCA Mechanism in Pain",
+ q:"Why do SNRIs and TCAs have established efficacy for chronic neuropathic pain while standard SSRIs generally do not?",
+ o:["SSRIs are too sedating for pain patients","Norepinephrine transporter inhibition, shared by SNRIs and TCAs, enhances descending pain-inhibiting pathways at the spinal cord, a mechanism SSRIs lack","SSRIs cause excessive GI side effects that limit use in pain patients","Pain pathways do not involve monoamine neurotransmitters at all"],
+ a:1,e:"SNRIs and TCAs share norepinephrine transporter inhibition, which enhances descending noradrenergic pathways that inhibit incoming pain signals at the spinal cord dorsal horn. SSRIs, lacking meaningful norepinephrine transporter activity, do not engage this pain-modulating circuit."},
+
+{c:9,t:"TCA vs SNRI for Pain",
+ q:"A patient with diabetic peripheral neuropathy and depression is considered for either duloxetine or amitriptyline. What is the primary clinical advantage of duloxetine for this indication?",
+ o:["Duloxetine has no mechanism relevant to pain treatment","Duloxetine achieves comparable pain and mood efficacy with substantially fewer off-target receptor effects, resulting in a more favorable side-effect and safety profile","Amitriptyline carries no risk of side effects","Duloxetine works exclusively through dopamine, unrelated to its actual mechanism"],
+ a:1,e:"Both agents share norepinephrine and serotonin transporter inhibition relevant to pain. Amitriptyline additionally binds histamine, muscarinic, and alpha-1 receptors, causing more sedation, anticholinergic effects, and cardiac conduction risk. Duloxetine achieves comparable efficacy with substantially better tolerability."},
+
+{c:9,t:"Gabapentinoids for Neuropathic Pain",
+ q:"Pregabalin is specifically FDA-approved for which of the following pain conditions?",
+ o:["Acute post-surgical pain only","Fibromyalgia, diabetic peripheral neuropathy, and postherpetic neuralgia","Migraine headache exclusively","Acute musculoskeletal back pain only"],
+ a:1,e:"Pregabalin is FDA-approved for fibromyalgia, diabetic peripheral neuropathy, and postherpetic neuralgia, all neuropathic pain conditions where its calcium channel mechanism is particularly effective, as opposed to purely nociceptive pain."},
+
+{c:9,t:"Pain and Mood Disorder Overlap",
+ q:"From a neurocircuitry perspective, why do many patients with chronic pain also present with comorbid depression?",
+ o:["Pain and depression share no common neurocircuitry; the comorbidity is coincidental","Chronic pain and mood disorders share overlapping descending serotonin and norepinephrine pathways that modulate both pain transmission and mood regulation","Pain medications directly cause depression as a side effect in every case","Depression is always the primary cause of chronic pain, never the reverse"],
+ a:1,e:"Chronic pain and mood disorders share overlapping descending serotonin and norepinephrine pathways that simultaneously modulate spinal cord pain transmission and central mood regulation, explaining both the high comorbidity rate and why SNRIs are effective for both conditions."},
+
+{c:9,t:"Placebo Response in Pain",
+ q:"What does the pharmacological reversibility of the placebo response in pain treatment suggest about its underlying nature?",
+ o:["The placebo response in pain is purely psychological with no biological basis","Pharmacological reversibility suggests the placebo response engages a real, identifiable neurobiological substrate rather than being a purely subjective phenomenon","Placebo responses never occur in chronic pain treatment","Reversibility proves that all chronic pain is psychogenic in origin"],
+ a:1,e:"The fact that the placebo response in pain can be pharmacologically reversed, classically demonstrated with opioid antagonists, indicates it engages real neurobiological pathways, likely the endogenous opioid system, rather than being a purely psychological phenomenon."},
+
+{c:9,t:"NET Inhibition and Spinal Cord Pain Gating",
+ q:"At the level of the spinal cord, how does enhanced descending noradrenergic activity reduce the perception of chronic pain?",
+ o:["It directly numbs peripheral nerve endings at the injury site","It enhances inhibitory gating at the dorsal horn, reducing transmission of ascending pain signals before they reach higher brain centers","It works exclusively in the brain with no spinal cord involvement","It eliminates all sensory input, including touch and temperature"],
+ a:1,e:"Descending noradrenergic pathways project to the dorsal horn of the spinal cord, where they enhance inhibitory gating of incoming pain signals, reducing the amount of nociceptive information that reaches the brain to be perceived as pain."},
+
+// ════════ CHAPTER 10: SLEEP/WAKE DISORDERS (6 questions) ════════
+{c:10,t:"Orexin System and Narcolepsy",
+ q:"A patient presents with excessive daytime sleepiness, sudden loss of muscle tone triggered by strong emotion, and hypnagogic hallucinations. Which underlying deficit is responsible for this presentation?",
+ o:["Excess orexin neuron activity in the lateral hypothalamus","Loss of orexin-producing neurons in the lateral hypothalamus, impairing the ability to stabilize wakefulness","Excess histamine release from the tuberomammillary nucleus","A primary defect in melatonin receptor signaling"],
+ a:1,e:"This presentation describes narcolepsy, caused by loss of orexin-producing neurons localized exclusively in the lateral hypothalamus. Orexin normally stabilizes wakefulness; its loss results in sleep attacks, cataplexy, and intrusion of REM-sleep phenomena into wakefulness."},
+
+{c:10,t:"Orexin Receptor Antagonists",
+ q:"Suvorexant and lemborexant are used to treat insomnia. What is their mechanism, and how does it relate to narcolepsy pathophysiology?",
+ o:["They are orexin receptor agonists, mimicking the wake-promoting effect of orexin","They are orexin receptor antagonists, blocking the wake-promoting signal in the opposite pharmacological direction from the deficiency seen in narcolepsy","They directly enhance the chloride channel independent of GABA, identical to barbiturates","They stimulate melatonin receptors to induce sleep"],
+ a:1,e:"Suvorexant and lemborexant are orexin receptor antagonists, blocking the wake-promoting orexin signal to facilitate sleep. This is the opposite pharmacological direction from narcolepsy, which results from loss of orexin signaling."},
+
+{c:10,t:"Histamine and Arousal",
+ q:"Why do many antipsychotics, TCAs, and first-generation antihistamines cause sedation as a side effect?",
+ o:["They all stimulate orexin receptors, paradoxically causing sedation","They block histamine-1 receptors, removing the wake-promoting signal normally provided by neurons in the tuberomammillary nucleus","They all act as melatonin receptor antagonists","They directly damage the reticular activating system"],
+ a:1,e:"Histamine-1 antagonism is the shared mechanism behind sedation in many antipsychotics, TCAs, and antihistamines. Histamine released from the tuberomammillary nucleus is a key arousal-promoting neurotransmitter, and blocking H1 receptors removes this arousal signal."},
+
+{c:10,t:"Melatonin Receptor Agonists",
+ q:"A patient with sleep-onset insomnia, but no difficulty staying asleep, is being considered for pharmacotherapy. Which agent's mechanism is most specifically suited for this presentation?",
+ o:["An orexin antagonist, best suited for sleep maintenance problems","A melatonin receptor agonist, which mimics the body's natural sleep-onset signal","A GABA-A potentiating agent with no specific advantage for onset versus maintenance","An alpha-1 antagonist with no established sleep-onset indication"],
+ a:1,e:"A melatonin receptor agonist mimics the body's natural sleep-onset signal, making it particularly well-suited for sleep-onset insomnia specifically, as opposed to sleep-maintenance problems, for which other mechanisms may be more appropriate."},
+
+{c:10,t:"Z-Drugs vs Benzodiazepines",
+ q:"How do Z-drugs differ from traditional benzodiazepines in their GABA-A receptor binding profile?",
+ o:["Z-drugs bind a completely different receptor unrelated to GABA-A","Z-drugs bind the same allosteric site but show relative selectivity for subunits associated with sedation, with comparatively less action on subunits associated with anxiolysis and muscle relaxation","Z-drugs open the chloride channel directly without requiring GABA, unlike benzodiazepines","Z-drugs carry no risk of dependence whatsoever"],
+ a:1,e:"Z-drugs bind the same allosteric benzodiazepine site on GABA-A receptors but show relative selectivity for subunits linked to sedation, with comparatively less binding at subunits linked to anxiolysis and muscle relaxation, giving a more focused hypnotic effect."},
+
+{c:10,t:"Agomelatine — Dual Indication",
+ q:"Agomelatine has clinical applications in both depression treatment and circadian rhythm normalization. What shared mechanism explains this dual utility?",
+ o:["It works purely through serotonin reuptake inhibition, unrelated to circadian function","Its combined melatonin receptor agonism and 5-HT2C antagonism allows it to address both circadian disruption and mood symptoms simultaneously","It blocks orexin receptors, unrelated to its antidepressant mechanism","It has no actual effect on sleep despite its marketing claims"],
+ a:1,e:"Agomelatine's dual mechanism, melatonin receptor agonism for circadian resynchronization plus 5-HT2C antagonism for an antidepressant effect, allows it to simultaneously address mood symptoms and circadian disruption, which frequently co-occur in depression."},
+
+{c:9,t:"Mechanism Distinction Within Chapter 9",
+ q:"A patient with chronic low back pain and no depressive symptoms asks why their NP is considering duloxetine rather than a purely analgesic medication. What is the most accurate explanation?",
+ o:["Duloxetine has no real analgesic properties and is being prescribed off-label with no evidence base","Duloxetine's norepinephrine transporter inhibition independently enhances descending pain-inhibiting pathways, giving it analgesic efficacy in chronic musculoskeletal pain even in the absence of comorbid depression","Duloxetine only works for pain when depression is also present","Duloxetine is being substituted for an opioid with no difference in mechanism"],
+ a:1,e:"Duloxetine's analgesic efficacy for chronic musculoskeletal pain, including chronic low back pain, is independent of antidepressant effect. Norepinephrine transporter inhibition enhances descending pain-inhibiting pathways at the spinal cord regardless of whether comorbid depression is present, distinguishing the pain indication from the mood indication."}
+];
+
+
+let cur=0,answered=new Array(50).fill(false),correct=new Array(50).fill(false);
+
+function build(){
+  const w=document.getElementById('qwrap');
+  Q.forEach((q,i)=>{
+    const d=document.createElement('div');
+    d.className='card'+(i===0?' active':'');
+    d.id='c'+i;
+    const L=['A','B','C','D'];
+    d.innerHTML=`<div class="qnum">Question ${i+1} of 50</div>
+<div class="qtag">Chapter ${q.c} · ${q.t}</div>
+<div class="qtext">${q.q}</div>
+<div class="opts" id="o${i}">${q.o.map((x,j)=>`<div class="opt" id="o${i}_${j}" onclick="pick(${i},${j})"><span class="ol">${L[j]}.</span><span>${x}</span></div>`).join('')}</div>
+<div class="exp" id="e${i}"><strong>Rationale:</strong> ${q.e}</div>
+<div class="nav">
+  <button class="btn btns" onclick="go(${i},-1)" ${i===0?'disabled':''}>← Previous</button>
+  <span style="font-size:13px;color:#888">${i+1} / 50</span>
+  ${i<49?`<button class="btn btnp" onclick="go(${i},1)">Next →</button>`:`<button class="btn btnp" onclick="showScore()">Finish Quiz</button>`}
+</div>`;
+    w.appendChild(d);
+  });
+  upd();
+}
+
+function pick(qi,oi){
+  if(answered[qi])return;
+  answered[qi]=true;correct[qi]=(oi===Q[qi].a);
+  Q[qi].o.forEach((_,j)=>{
+    const el=document.getElementById(`o${qi}_${j}`);
+    if(j===Q[qi].a)el.classList.add('correct');
+    else if(j===oi&&!correct[qi])el.classList.add('incorrect');
+  });
+  document.getElementById('e'+qi).classList.add('show');
+  upd();
+}
+
+function go(c,d){
+  document.getElementById('c'+c).classList.remove('active');
+  cur=c+d;
+  document.getElementById('c'+cur).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  upd();
+}
+
+function upd(){
+  const pct=Math.round(((cur+1)/50)*100);
+  document.getElementById('pf').style.width=pct+'%';
+  const done=answered.filter(Boolean).length;
+  document.getElementById('pt').textContent=`Question ${cur+1} of 50 · ${done} answered`;
+}
+
+function showScore(){
+  document.getElementById('qwrap').style.display='none';
+  const sc=document.getElementById('sc');sc.classList.add('show');
+  const n=correct.filter(Boolean).length,pct=Math.round(n/50*100);
+  document.getElementById('spct').textContent=pct+'%';
+  document.getElementById('sraw').textContent=`${n} / 50 correct`;
+  const msg=document.getElementById('smsg');
+  if(pct>=90){msg.className='smsg ga';msg.textContent='Excellent! You are well prepared for Exam 3.';}
+  else if(pct>=80){msg.className='smsg gb';msg.textContent='Great work! Review any missed questions before the exam.';}
+  else if(pct>=70){msg.className='smsg gc';msg.textContent='Good effort. Review the study guide for missed topics.';}
+  else{msg.className='smsg gf';msg.textContent='Keep studying. Review the Ch 7-10 study guide and cheat sheets.';}
+  const c7=Q.reduce((a,q,i)=>q.c===7?{c:a.c+(correct[i]?1:0),t:a.t+1}:a,{c:0,t:0});
+  const c8=Q.reduce((a,q,i)=>q.c===8?{c:a.c+(correct[i]?1:0),t:a.t+1}:a,{c:0,t:0});
+  const c9=Q.reduce((a,q,i)=>q.c===9?{c:a.c+(correct[i]?1:0),t:a.t+1}:a,{c:0,t:0});
+  const c10=Q.reduce((a,q,i)=>q.c===10?{c:a.c+(correct[i]?1:0),t:a.t+1}:a,{c:0,t:0});
+  document.getElementById('chb').innerHTML=`
+    <div class="chbox"><h4>Ch 7 Mood</h4><p>${c7.c}/${c7.t}</p></div>
+    <div class="chbox"><h4>Ch 8 Anxiety</h4><p>${c8.c}/${c8.t}</p></div>
+    <div class="chbox"><h4>Ch 9 Pain</h4><p>${c9.c}/${c9.t}</p></div>
+    <div class="chbox"><h4>Ch 10 Sleep</h4><p>${c10.c}/${c10.t}</p></div>`;
+  const g=document.getElementById('rg');
+  Q.forEach((_,i)=>{
+    const d=document.createElement('div');
+    d.className='rdot '+(answered[i]?(correct[i]?'dok':'dno'):'dno');
+    d.textContent=i+1;
+    d.onclick=()=>{sc.classList.remove('show');document.getElementById('qwrap').style.display='block';document.querySelectorAll('.card').forEach(c=>c.classList.remove('active'));document.getElementById('c'+i).classList.add('active');cur=i;upd();window.scrollTo({top:0,behavior:'smooth'});};
+    g.appendChild(d);
+  });
+}
+
+function restart(){
+  answered=new Array(50).fill(false);correct=new Array(50).fill(false);cur=0;
+  document.getElementById('sc').classList.remove('show');
+  document.getElementById('qwrap').style.display='block';
+  document.querySelectorAll('.card').forEach(c=>c.classList.remove('active'));
+  document.getElementById('c0').classList.add('active');
+  Q.forEach((_,i)=>{['0','1','2','3'].forEach(j=>{const el=document.getElementById(`o${i}_${j}`);if(el)el.className='opt';});const e=document.getElementById('e'+i);if(e)e.classList.remove('show');});
+  document.getElementById('rg').innerHTML='';
+  upd();window.scrollTo({top:0,behavior:'smooth'});
+}
+build();
+</script>
+</body>
+</html>
